@@ -17,3 +17,6 @@ migrate-down:
 
 run:
 	go run cmd/budget-app/main.go
+
+test:
+	go test ./...

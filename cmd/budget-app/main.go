@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/danielblagy/budget-app/intenal/handler"
+	"github.com/danielblagy/budget-app/intenal/service/users"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 )
@@ -30,23 +31,11 @@ func main() {
 	}
 	defer conn.Close(context.Background())
 
-	http.HandleFunc("/", handler.Greet)
-	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		rows, err := conn.Query(context.Background(), "select handle from users")
-		if err != nil {
-			fmt.Fprintf(w, "error: "+err.Error())
-			return
-		}
+	usersService := users.NewService(conn)
 
-		for rows.Next() {
-			var handle string
-			err := rows.Scan(&handle)
-			if err != nil {
-				fmt.Fprintf(w, "error: "+err.Error())
-				return
-			}
-			fmt.Fprintf(w, "%s\n", handle)
-		}
-	})
+	app := handler.NewHandler(usersService)
+
+	http.HandleFunc("/", app.Greet)
+	http.HandleFunc("/users", app.GetUsers)
 	http.ListenAndServe(":8080", nil)
 }
