@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/danielblagy/budget-app/intenal/handler"
+	budget_app "github.com/danielblagy/budget-app/intenal/handler/budget-app"
 	"github.com/danielblagy/budget-app/intenal/service/users"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 )
@@ -16,14 +17,14 @@ import (
 const envDatabaseUrl = "DATABASE_URL"
 
 func main() {
-	// load .env file
+	// load environment variables from .env file
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 	log.Println(os.Getenv(envDatabaseUrl))
 
-	// urlExample := "postgres://username:password@localhost:5432/database_name"
+	// connect to postgres database
 	conn, err := pgx.Connect(context.Background(), os.Getenv(envDatabaseUrl))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
@@ -31,11 +32,21 @@ func main() {
 	}
 	defer conn.Close(context.Background())
 
+	// services
+
 	usersService := users.NewService(conn)
 
-	app := handler.NewHandler(usersService)
+	// fiber app
 
-	http.HandleFunc("/", app.Greet)
-	http.HandleFunc("/users", app.GetUsers)
-	http.ListenAndServe(":8080", nil)
+	app := fiber.New()
+	app.Use(logger.New())
+
+	// handlers
+
+	budgetAppHandler := budget_app.NewHandler(app, usersService)
+	budgetAppHandler.SetupRoutes()
+
+	// start the app
+
+	log.Fatal(app.Listen(":5000"))
 }
