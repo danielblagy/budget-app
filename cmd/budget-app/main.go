@@ -20,7 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-	log.Println("+", os.Getenv(envDatabaseUrl))
+	log.Println(os.Getenv(envDatabaseUrl))
 
 	// urlExample := "postgres://username:password@localhost:5432/database_name"
 	conn, err := pgx.Connect(context.Background(), os.Getenv(envDatabaseUrl))
