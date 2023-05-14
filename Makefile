@@ -1,5 +1,10 @@
 include .env
 
+docker-up:
+	docker compose up -d
+
+docker-down:
+	docker compose down
 
 migrate-up:
 	migrate -database ${DATABASE_URL} -path migrations up
