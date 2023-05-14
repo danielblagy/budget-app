@@ -9,7 +9,7 @@ type Handler interface {
 	SetupRoutes()
 	Greet(c *fiber.Ctx) error
 	GetUsers(c *fiber.Ctx) error
-	//GetUser(c *fiber.Ctx) error
+	GetUser(c *fiber.Ctx) error
 	//CreateUser(c *fiber.Ctx) error
 	//UpdateUser(c *fiber.Ctx) error
 	//DeleteUser(c *fiber.Ctx) error
