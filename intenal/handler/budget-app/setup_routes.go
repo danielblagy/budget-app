@@ -7,4 +7,6 @@ func (h handler) SetupRoutes() {
 	usersGroup.Get("/", h.GetUsers)
 	usersGroup.Get("/:username", h.GetUser)
 	usersGroup.Post("/", h.CreateUser)
+	// TODO update password using JWT token usersGroup.Put("/", h.UpdateUser)
+	// TODO delete using JWT token usersGroup.Delete("/", h.DeleteUser)
 }

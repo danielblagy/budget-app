@@ -31,4 +31,41 @@ docker, docker-compose
 
 ### golang packages
 
+TODO
+
 ## Make Commands
+
+Start Docker containers
+```
+make docker-up
+```
+
+Stop and remove Docker containers
+```
+make docker-down
+```
+
+Create a database migration
+```
+make migrate-generate name=some_name_for_your_migration
+```
+
+Run database migrations up
+```
+make migrate-up
+```
+
+Run database migrations down
+```
+make migrate-down
+```
+
+Run REST server
+```
+make run
+```
+
+Run tests
+```
+make test
+```
