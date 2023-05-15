@@ -11,6 +11,7 @@ type Service interface {
 	GetUsers(ctx context.Context) ([]*model.User, error)
 	GetUser(ctx context.Context, username string) (*model.User, error)
 	CreateUser(ctx context.Context, user *model.User) (*model.User, error)
+	Exists(ctx context.Context, username string) (bool, error)
 }
 
 type service struct {

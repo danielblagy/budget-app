@@ -10,17 +10,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-var ErrUserNotFound = errors.New("user not found")
-
-func (s service) GetUser(ctx context.Context, username string) (*model.User, error) {
+func (s service) Exists(ctx context.Context, username string) (bool, error) {
 	var user model.User
 	err := pgxscan.Get(ctx, s.db, &user, fmt.Sprintf("select username, email, full_name from users where username = '%s'", username))
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, ErrUserNotFound
+			return false, nil
 		}
-		return nil, errors.Wrap(err, "can't get user from db")
+		return false, errors.Wrap(err, "can't check if user exists")
 	}
 
-	return &user, nil
+	return true, nil
 }

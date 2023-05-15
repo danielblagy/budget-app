@@ -23,6 +23,14 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("username may only contain letters, numbers, underscores, and dashes")
 	}
 
+	exists, err := h.usersService.Exists(c.Context(), user.Username)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return c.Status(fiber.StatusConflict).SendString("username has already been taken")
+	}
+
 	createdUser, err := h.usersService.CreateUser(c.Context(), &user)
 	if err != nil {
 		return err
