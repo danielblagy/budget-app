@@ -1,17 +1,19 @@
 package budget_app
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 func (h handler) GetUser(c *fiber.Ctx) error {
-	userID, err := c.ParamsInt("user_id")
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	username := c.Params("username")
+	if len(username) == 0 {
+		return c.Status(fiber.StatusBadRequest).SendString("username must not be empty")
 	}
-	if userID <= 0 {
-		return c.Status(fiber.StatusBadRequest).SendString("user_id is not valid")
+	if !containsOnlyValidCharacters(username) {
+		return c.Status(fiber.StatusBadRequest).SendString("username may only contain letters, numbers, underscores, and dashes")
 	}
 
-	user, err := h.usersService.GetUser(c.Context(), userID)
+	user, err := h.usersService.GetUser(c.Context(), username)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
