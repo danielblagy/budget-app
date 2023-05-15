@@ -6,4 +6,5 @@ func (h handler) SetupRoutes() {
 	usersGroup := h.app.Group("users")
 	usersGroup.Get("/", h.GetUsers)
 	usersGroup.Get("/:user_id", h.GetUser)
+	usersGroup.Post("/", h.CreateUser)
 }

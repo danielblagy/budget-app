@@ -8,6 +8,7 @@ import (
 
 	budget_app "github.com/danielblagy/budget-app/intenal/handler/budget-app"
 	"github.com/danielblagy/budget-app/intenal/service/users"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/jackc/pgx/v5"
@@ -32,6 +33,10 @@ func main() {
 	}
 	defer conn.Close(context.Background())
 
+	// validator
+
+	validate := validator.New()
+
 	// services
 
 	usersService := users.NewService(conn)
@@ -43,7 +48,7 @@ func main() {
 
 	// handlers
 
-	budgetAppHandler := budget_app.NewHandler(app, usersService)
+	budgetAppHandler := budget_app.NewHandler(validate, app, usersService)
 	budgetAppHandler.SetupRoutes()
 
 	// start the app
