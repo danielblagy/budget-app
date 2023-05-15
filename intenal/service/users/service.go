@@ -12,6 +12,7 @@ type Service interface {
 	GetUser(ctx context.Context, username string) (*model.User, error)
 	CreateUser(ctx context.Context, user *model.User) (*model.User, error)
 	Exists(ctx context.Context, username string) (bool, error)
+	UserWithEmailExists(ctx context.Context, email string) (bool, error)
 }
 
 type service struct {

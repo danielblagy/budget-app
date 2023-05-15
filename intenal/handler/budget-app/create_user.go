@@ -31,6 +31,14 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusConflict).SendString("username has already been taken")
 	}
 
+	userWithEmailExists, err := h.usersService.UserWithEmailExists(c.Context(), user.Email)
+	if err != nil {
+		return err
+	}
+	if userWithEmailExists {
+		return c.Status(fiber.StatusConflict).SendString("email is already in use by some user")
+	}
+
 	createdUser, err := h.usersService.CreateUser(c.Context(), &user)
 	if err != nil {
 		return err
