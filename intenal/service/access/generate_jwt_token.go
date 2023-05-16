@@ -8,6 +8,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const jwtSecretKeyEnvVariable = "JWT_SECRET_KEY"
+
 const accessTokenDuration = time.Minute * 15
 const refreshTokenDuration = time.Hour * 24 * 21
 
@@ -17,8 +19,6 @@ type tokenClaims struct {
 }
 
 func generateJwtToken(username string, tokenDuration time.Duration) (string, error) {
-	// Create a new token object, specifying signing method and the claims
-	// you would like it to contain.
 	currentTime := time.Now()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, tokenClaims{
 		username,
@@ -29,9 +29,8 @@ func generateJwtToken(username string, tokenDuration time.Duration) (string, err
 		},
 	})
 
-	secretKey := os.Getenv("JWT_SECRET_KEY")
+	secretKey := os.Getenv(jwtSecretKeyEnvVariable)
 
-	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString([]byte(secretKey))
 	if err != nil {
 		return "", errors.Wrap(err, "can't sign jwt token")

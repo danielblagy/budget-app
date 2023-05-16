@@ -4,20 +4,24 @@ import (
 	"context"
 
 	"github.com/danielblagy/budget-app/intenal/model"
+	"github.com/danielblagy/budget-app/intenal/service/users"
 	"github.com/jackc/pgx/v5"
 )
 
 type Service interface {
-	// TODO	must also return jwt token
 	LogIn(ctx context.Context, login *model.Login) (*model.UserTokens, error)
+	// Authenticate returns true if successfully authenticated.
+	Authenticate(ctx context.Context, token string) (bool, error)
 }
 
 type service struct {
-	db *pgx.Conn
+	db           *pgx.Conn
+	usersService users.Service
 }
 
-func NewService(db *pgx.Conn) Service {
+func NewService(db *pgx.Conn, usersService users.Service) Service {
 	return &service{
-		db: db,
+		db:           db,
+		usersService: usersService,
 	}
 }
