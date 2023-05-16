@@ -8,7 +8,9 @@ import (
 )
 
 type Service interface {
+	// GetUsers retuns users with omitted Password field (empty string)
 	GetUsers(ctx context.Context) ([]*model.User, error)
+	// GetUser retuns user with omitted Password field (empty string)
 	GetUser(ctx context.Context, username string) (*model.User, error)
 	CreateUser(ctx context.Context, user *model.User) (*model.User, error)
 	Exists(ctx context.Context, username string) (bool, error)

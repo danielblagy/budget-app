@@ -1,6 +1,7 @@
 package budget_app
 
 import (
+	"errors"
 	"regexp"
 
 	"github.com/danielblagy/budget-app/intenal/model"
@@ -15,12 +16,8 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 		return err
 	}
 
-	if err := h.validate.Struct(user); err != nil {
+	if err := h.createUserValidateBody(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
-	}
-
-	if !containsOnlyValidCharacters(user.Username) {
-		return c.Status(fiber.StatusBadRequest).SendString("username may only contain letters, numbers, underscores, and dashes")
 	}
 
 	exists, err := h.usersService.Exists(c.Context(), user.Username)
@@ -45,4 +42,16 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(createdUser)
+}
+
+func (h handler) createUserValidateBody(user *model.User) error {
+	if err := h.validate.Struct(user); err != nil {
+		return err
+	}
+
+	if !containsOnlyValidCharacters(user.Username) {
+		return errors.New("username may only contain letters, numbers, underscores, and dashes")
+	}
+
+	return nil
 }
