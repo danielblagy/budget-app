@@ -1,6 +1,7 @@
 package budget_app
 
 import (
+	"github.com/danielblagy/budget-app/intenal/service/access"
 	"github.com/danielblagy/budget-app/intenal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -20,13 +21,15 @@ type handler struct {
 	validate *validator.Validate
 	app      *fiber.App
 
-	usersService users.Service
+	usersService  users.Service
+	accessService access.Service
 }
 
-func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service) Handler {
+func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service) Handler {
 	return &handler{
-		validate:     validate,
-		app:          app,
-		usersService: usersService,
+		validate:      validate,
+		app:           app,
+		usersService:  usersService,
+		accessService: accessService,
 	}
 }

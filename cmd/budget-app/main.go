@@ -7,6 +7,7 @@ import (
 	"os"
 
 	budget_app "github.com/danielblagy/budget-app/intenal/handler/budget-app"
+	"github.com/danielblagy/budget-app/intenal/service/access"
 	"github.com/danielblagy/budget-app/intenal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -40,6 +41,7 @@ func main() {
 	// services
 
 	usersService := users.NewService(conn)
+	accessService := access.NewService(conn)
 
 	// fiber app
 
@@ -48,7 +50,7 @@ func main() {
 
 	// handlers
 
-	budgetAppHandler := budget_app.NewHandler(validate, app, usersService)
+	budgetAppHandler := budget_app.NewHandler(validate, app, usersService, accessService)
 	budgetAppHandler.SetupRoutes()
 
 	// start the app
