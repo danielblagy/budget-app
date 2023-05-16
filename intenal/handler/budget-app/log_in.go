@@ -8,6 +8,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+const accessTokenCookieName = "budget-app-access-token"
+const refreshTokenCookieName = "budget-app-refresh-token"
+
 func (h handler) LogIn(c *fiber.Ctx) error {
 	var login model.Login
 	if err := c.BodyParser(&login); err != nil {
@@ -28,6 +31,18 @@ func (h handler) LogIn(c *fiber.Ctx) error {
 		}
 		return err
 	}
+
+	c.Cookie(&fiber.Cookie{
+		Name:     accessTokenCookieName,
+		Value:    userTokens.AccessToken,
+		HTTPOnly: true,
+	})
+
+	c.Cookie(&fiber.Cookie{
+		Name:     refreshTokenCookieName,
+		Value:    userTokens.RefreshToken,
+		HTTPOnly: true,
+	})
 
 	return c.JSON(userTokens)
 }

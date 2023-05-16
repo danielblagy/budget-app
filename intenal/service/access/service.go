@@ -10,8 +10,8 @@ import (
 
 type Service interface {
 	LogIn(ctx context.Context, login *model.Login) (*model.UserTokens, error)
-	// Authenticate returns true if successfully authenticated.
-	Authenticate(ctx context.Context, token string) (bool, error)
+	// Authorize returns username if successfully authenticated.
+	Authorize(ctx context.Context, token string) (string, error)
 }
 
 type service struct {

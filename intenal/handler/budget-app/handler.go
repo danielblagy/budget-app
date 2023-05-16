@@ -15,6 +15,7 @@ type Handler interface {
 	CreateUser(c *fiber.Ctx) error
 	//UpdateUser(c *fiber.Ctx) error
 	//DeleteUser(c *fiber.Ctx) error
+	Me(c *fiber.Ctx) error
 }
 
 type handler struct {
