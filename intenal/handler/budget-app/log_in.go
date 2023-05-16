@@ -18,7 +18,7 @@ func (h handler) LogIn(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
-	err := h.accessService.LogIn(c.Context(), &login)
+	userTokens, err := h.accessService.LogIn(c.Context(), &login)
 	if err != nil {
 		if errors.Is(err, access.ErrUserNotFound) {
 			return c.Status(fiber.StatusNotFound).SendString(err.Error())
@@ -29,6 +29,5 @@ func (h handler) LogIn(c *fiber.Ctx) error {
 		return err
 	}
 
-	// TODO access service will return jwt token that will be sent as a response
-	return c.SendString("access granted!")
+	return c.JSON(userTokens)
 }

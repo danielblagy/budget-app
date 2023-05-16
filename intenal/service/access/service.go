@@ -9,7 +9,7 @@ import (
 
 type Service interface {
 	// TODO	must also return jwt token
-	LogIn(ctx context.Context, login *model.Login) error
+	LogIn(ctx context.Context, login *model.Login) (*model.UserTokens, error)
 }
 
 type service struct {

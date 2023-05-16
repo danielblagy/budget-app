@@ -14,22 +14,35 @@ import (
 var ErrUserNotFound = errors.New("user not found")
 var ErrIncorrectPassword = errors.New("password is incorrect")
 
-func (s service) LogIn(ctx context.Context, login *model.Login) error {
+func (s service) LogIn(ctx context.Context, login *model.Login) (*model.UserTokens, error) {
 	var passwordHash string
 	err := pgxscan.Get(ctx, s.db, &passwordHash, fmt.Sprintf("select password_hash from users where username = '%s'", login.Username))
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return ErrUserNotFound
+			return nil, ErrUserNotFound
 		}
-		return errors.Wrap(err, "can't get user from db")
+		return nil, errors.Wrap(err, "can't get user from db")
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(login.Password)); err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return ErrIncorrectPassword
+			return nil, ErrIncorrectPassword
 		}
-		return errors.Wrap(err, "can't compare passwords")
+		return nil, errors.Wrap(err, "can't compare passwords")
 	}
 
-	return nil
+	accessToken, err := generateJwtToken(login.Username, accessTokenDuration)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't generate access token")
+	}
+
+	refreshToken, err := generateJwtToken(login.Username, refreshTokenDuration)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't generate refresh token")
+	}
+
+	return &model.UserTokens{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
 }
