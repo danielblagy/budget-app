@@ -18,6 +18,7 @@ type Handler interface {
 	//DeleteUser(c *fiber.Ctx) error
 	Me(c *fiber.Ctx) error
 	GetCategories(c *fiber.Ctx) error
+	GetCategory(c *fiber.Ctx) error
 }
 
 type handler struct {
