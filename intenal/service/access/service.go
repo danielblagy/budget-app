@@ -5,7 +5,6 @@ import (
 
 	"github.com/danielblagy/budget-app/intenal/model"
 	"github.com/danielblagy/budget-app/intenal/service/users"
-	"github.com/jackc/pgx/v5"
 )
 
 type Service interface {
@@ -15,13 +14,11 @@ type Service interface {
 }
 
 type service struct {
-	db           *pgx.Conn
 	usersService users.Service
 }
 
-func NewService(db *pgx.Conn, usersService users.Service) Service {
+func NewService(usersService users.Service) Service {
 	return &service{
-		db:           db,
 		usersService: usersService,
 	}
 }

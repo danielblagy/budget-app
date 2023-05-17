@@ -2,11 +2,9 @@ package access
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/danielblagy/budget-app/intenal/model"
-	"github.com/georgysavva/scany/v2/pgxscan"
-	"github.com/jackc/pgx/v5"
+	"github.com/danielblagy/budget-app/intenal/service/users"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,13 +13,12 @@ var ErrUserNotFound = errors.New("user not found")
 var ErrIncorrectPassword = errors.New("password is incorrect")
 
 func (s service) LogIn(ctx context.Context, login *model.Login) (*model.UserTokens, error) {
-	var passwordHash string
-	err := pgxscan.Get(ctx, s.db, &passwordHash, fmt.Sprintf("select password_hash from users where username = '%s'", login.Username))
+	passwordHash, err := s.usersService.GetPasswordHash(ctx, login.Username)
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
+		if errors.Is(err, users.ErrUserNotFound) {
 			return nil, ErrUserNotFound
 		}
-		return nil, errors.Wrap(err, "can't get user from db")
+		return nil, err
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(login.Password)); err != nil {

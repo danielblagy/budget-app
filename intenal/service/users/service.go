@@ -15,6 +15,7 @@ type Service interface {
 	Create(ctx context.Context, user *model.User) (*model.User, error)
 	Exists(ctx context.Context, username string) (bool, error)
 	UserWithEmailExists(ctx context.Context, email string) (bool, error)
+	GetPasswordHash(ctx context.Context, username string) (string, error)
 }
 
 type service struct {

@@ -42,7 +42,7 @@ func main() {
 	// services
 
 	usersService := users.NewService(conn)
-	accessService := access.NewService(conn, usersService)
+	accessService := access.NewService(usersService)
 	categoriesService := categories.NewService(conn)
 
 	// fiber app
