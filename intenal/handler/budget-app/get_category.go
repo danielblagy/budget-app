@@ -26,6 +26,7 @@ func (h handler) GetCategory(c *fiber.Ctx) error {
 		if errors.Is(err, categories.ErrNotFound) {
 			return c.Status(fiber.StatusNotFound).SendString(err.Error())
 		}
+		return err
 	}
 
 	// check if category belongs to the user, if not, send Not Found
