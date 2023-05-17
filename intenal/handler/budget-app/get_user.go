@@ -16,7 +16,7 @@ func (h handler) GetUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("username may only contain letters, numbers, underscores, and dashes")
 	}
 
-	user, err := h.usersService.GetUser(c.Context(), username)
+	user, err := h.usersService.Get(c.Context(), username)
 	if err != nil {
 		if errors.Is(err, users.ErrUserNotFound) {
 			return c.Status(fiber.StatusNotFound).SendString(err.Error())

@@ -5,7 +5,7 @@ import (
 )
 
 func (h handler) GetUsers(c *fiber.Ctx) error {
-	users, err := h.usersService.GetUsers(c.UserContext())
+	users, err := h.usersService.GetAll(c.UserContext())
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}

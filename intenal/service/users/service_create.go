@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s service) CreateUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (s service) Create(ctx context.Context, user *model.User) (*model.User, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't generate password hash")

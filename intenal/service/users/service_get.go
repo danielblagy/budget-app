@@ -12,7 +12,7 @@ import (
 
 var ErrUserNotFound = errors.New("user not found")
 
-func (s service) GetUser(ctx context.Context, username string) (*model.User, error) {
+func (s service) Get(ctx context.Context, username string) (*model.User, error) {
 	var user model.User
 	err := pgxscan.Get(ctx, s.db, &user, fmt.Sprintf("select username, email, full_name from users where username = '%s'", username))
 	if err != nil {

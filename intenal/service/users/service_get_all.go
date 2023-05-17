@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (s service) GetUsers(ctx context.Context) ([]*model.User, error) {
+func (s service) GetAll(ctx context.Context) ([]*model.User, error) {
 	var users []*model.User
 	err := pgxscan.Select(ctx, s.db, &users, "select username, email, full_name from users")
 	if err != nil {

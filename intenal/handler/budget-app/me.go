@@ -10,7 +10,7 @@ func (h handler) Me(c *fiber.Ctx) error {
 		return err
 	}
 
-	user, err := h.usersService.GetUser(c.Context(), username)
+	user, err := h.usersService.Get(c.Context(), username)
 	if err != nil {
 		// not checking for ErrNotFound because the user must exist if authorization was successful
 		return err

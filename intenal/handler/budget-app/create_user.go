@@ -36,7 +36,7 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusConflict).SendString("email is already in use by some user")
 	}
 
-	createdUser, err := h.usersService.CreateUser(c.Context(), &user)
+	createdUser, err := h.usersService.Create(c.Context(), &user)
 	if err != nil {
 		return err
 	}
