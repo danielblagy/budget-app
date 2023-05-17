@@ -11,6 +11,7 @@ type Service interface {
 	// GetAll returns all users's categories.
 	GetAll(ctx context.Context, username string) ([]*model.Category, error)
 	Get(ctx context.Context, categoryID int64) (*model.Category, error)
+	Create(ctx context.Context, username string, category *model.NewCategory) (*model.Category, error)
 }
 
 type service struct {

@@ -19,6 +19,7 @@ type Handler interface {
 	Me(c *fiber.Ctx) error
 	GetCategories(c *fiber.Ctx) error
 	GetCategory(c *fiber.Ctx) error
+	CreateCategory(c *fiber.Ctx) error
 }
 
 type handler struct {
