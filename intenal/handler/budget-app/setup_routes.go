@@ -13,4 +13,7 @@ func (h handler) SetupRoutes() {
 
 	accessGroup := h.app.Group("access")
 	accessGroup.Post("/login", h.LogIn)
+
+	categoriesGroup := h.app.Group("categories")
+	categoriesGroup.Get("/", h.GetCategories)
 }
