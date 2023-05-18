@@ -12,9 +12,9 @@ import (
 
 var ErrNotFound = errors.New("category not found")
 
-func (s service) Get(ctx context.Context, categoryID int64) (*model.Category, error) {
+func (s service) Get(ctx context.Context, username string, categoryID int64) (*model.Category, error) {
 	var category model.Category
-	err := pgxscan.Get(ctx, s.db, &category, fmt.Sprintf("select id, user_id, name from categories where id = '%d'", categoryID))
+	err := pgxscan.Get(ctx, s.db, &category, fmt.Sprintf("select id, user_id, name from categories where id = '%d' and user_id = '%s'", categoryID, username))
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound

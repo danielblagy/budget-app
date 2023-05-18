@@ -21,17 +21,12 @@ func (h handler) GetCategory(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("category id is not valid")
 	}
 
-	category, err := h.categoriesService.Get(c.Context(), int64(categoryID))
+	category, err := h.categoriesService.Get(c.Context(), username, int64(categoryID))
 	if err != nil {
 		if errors.Is(err, categories.ErrNotFound) {
 			return c.Status(fiber.StatusNotFound).SendString(err.Error())
 		}
 		return err
-	}
-
-	// check if category belongs to the user, if not, send Not Found
-	if category.UserID != username {
-		return c.Status(fiber.StatusNotFound).SendString("category is not found")
 	}
 
 	return c.JSON(category)
