@@ -18,5 +18,5 @@ func (h handler) SetupRoutes() {
 	categoriesGroup.Get("/", h.GetCategories)
 	categoriesGroup.Get("/:id", h.GetCategory)
 	categoriesGroup.Post("/", h.CreateCategory)
-	categoriesGroup.Put("/:id", h.UpdateCategory)
+	categoriesGroup.Put("/", h.UpdateCategory)
 }

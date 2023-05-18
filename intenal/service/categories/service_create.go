@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (s service) Create(ctx context.Context, username string, category *model.NewCategory) (*model.Category, error) {
+func (s service) Create(ctx context.Context, username string, category *model.CreateCategory) (*model.Category, error) {
 	rows, err := s.db.Query(ctx, fmt.Sprintf("insert into categories (user_id, name) values ('%s', '%s') returning id, user_id, name", username, category.Name))
 	if err != nil {
 		return nil, errors.Wrap(err, "can't insert into db")

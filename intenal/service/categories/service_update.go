@@ -10,9 +10,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (s service) Update(ctx context.Context, id int64, category *model.NewCategory) (*model.Category, error) {
+func (s service) Update(ctx context.Context, username string, updateData *model.UpdateCategory) (*model.Category, error) {
 	var updatedCategory model.Category
-	err := pgxscan.Get(ctx, s.db, &updatedCategory, fmt.Sprintf("update categories set name = '%s' where id = '%d' returning id, user_id, name", category.Name, id))
+	err := pgxscan.Get(ctx, s.db, &updatedCategory, fmt.Sprintf("update categories set name = '%s' where id = '%d' and user_id = '%s' returning id, user_id, name", updateData.Name, updateData.ID, username))
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound

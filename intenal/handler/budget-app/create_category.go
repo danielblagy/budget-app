@@ -11,7 +11,7 @@ func (h handler) CreateCategory(c *fiber.Ctx) error {
 		return err
 	}
 
-	var category model.NewCategory
+	var category model.CreateCategory
 	if err := c.BodyParser(&category); err != nil {
 		return err
 	}
