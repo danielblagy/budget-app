@@ -13,6 +13,7 @@ type Service interface {
 	Get(ctx context.Context, username string, categoryID int64) (*model.Category, error)
 	Create(ctx context.Context, username string, category *model.CreateCategory) (*model.Category, error)
 	Update(ctx context.Context, username string, updateData *model.UpdateCategory) (*model.Category, error)
+	Delete(ctx context.Context, username string, categoryID int64) (*model.Category, error)
 }
 
 type service struct {
