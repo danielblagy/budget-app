@@ -3,8 +3,8 @@ package categories
 import (
 	"context"
 
+	"github.com/danielblagy/budget-app/intenal/db"
 	"github.com/danielblagy/budget-app/intenal/model"
-	"github.com/jackc/pgx/v5"
 )
 
 type Service interface {
@@ -17,11 +17,11 @@ type Service interface {
 }
 
 type service struct {
-	db *pgx.Conn
+	categoriesQuery db.CategoriesQuery
 }
 
-func NewService(db *pgx.Conn) Service {
+func NewService(categoriesQuery db.CategoriesQuery) Service {
 	return &service{
-		db: db,
+		categoriesQuery: categoriesQuery,
 	}
 }

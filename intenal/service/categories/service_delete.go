@@ -2,23 +2,20 @@ package categories
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
 	"github.com/danielblagy/budget-app/intenal/model"
-	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5"
+	"github.com/pkg/errors"
 )
 
 func (s service) Delete(ctx context.Context, username string, categoryID int64) (*model.Category, error) {
-	var deletedCategory model.Category
-	err := pgxscan.Get(ctx, s.db, &deletedCategory, fmt.Sprintf("delete from categories where user_id = '%s' and id = '%d' returning id, user_id, name", username, categoryID))
+	deletedCategory, err := s.categoriesQuery.Delete(ctx, username, categoryID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
 		}
-		return nil, err
+		return nil, errors.Wrap(err, "can't delete category")
 	}
 
-	return &deletedCategory, nil
+	return deletedCategory, nil
 }

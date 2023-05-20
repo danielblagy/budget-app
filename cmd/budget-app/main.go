@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/danielblagy/budget-app/intenal/db"
 	budget_app "github.com/danielblagy/budget-app/intenal/handler/budget-app"
 	"github.com/danielblagy/budget-app/intenal/service/access"
 	"github.com/danielblagy/budget-app/intenal/service/categories"
@@ -39,11 +40,15 @@ func main() {
 
 	validate := validator.New()
 
+	// db queries
+
+	categoriesQuery := db.NewCategoriesQuery(conn)
+
 	// services
 
 	usersService := users.NewService(conn)
 	accessService := access.NewService(usersService)
-	categoriesService := categories.NewService(conn)
+	categoriesService := categories.NewService(categoriesQuery)
 
 	// fiber app
 
