@@ -9,7 +9,7 @@ import (
 
 type Service interface {
 	// GetAll returns all users's categories.
-	GetAll(ctx context.Context, username string) ([]*model.Category, error)
+	GetAll(ctx context.Context, username string, categoryType model.CategoryType) ([]*model.Category, error)
 	Get(ctx context.Context, username string, categoryID int64) (*model.Category, error)
 	Create(ctx context.Context, username string, category *model.CreateCategory) (*model.Category, error)
 	Update(ctx context.Context, username string, updateData *model.UpdateCategory) (*model.Category, error)

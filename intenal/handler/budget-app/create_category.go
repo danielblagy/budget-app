@@ -11,6 +11,7 @@ func (h handler) CreateCategory(c *fiber.Ctx) error {
 		return err
 	}
 
+	// TODO now throws err if provided type is not valid
 	var category model.CreateCategory
 	if err := c.BodyParser(&category); err != nil {
 		return err

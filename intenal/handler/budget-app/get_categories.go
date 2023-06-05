@@ -1,6 +1,14 @@
 package budget_app
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/danielblagy/budget-app/intenal/model"
+	"github.com/gofiber/fiber/v2"
+)
+
+var validCategoryTypes = map[model.CategoryType]struct{}{
+	model.CategoryTypeExpense: {},
+	model.CategoryTypeIncome:  {},
+}
 
 func (h handler) GetCategories(c *fiber.Ctx) error {
 	username, err := h.authorize(c)
@@ -8,7 +16,14 @@ func (h handler) GetCategories(c *fiber.Ctx) error {
 		return err
 	}
 
-	categories, err := h.categoriesService.GetAll(c.Context(), username)
+	categoryTypeRaw := c.Params("type")
+
+	categoryType := model.CategoryType(categoryTypeRaw)
+	if _, ok := validCategoryTypes[categoryType]; !ok {
+		return c.Status(fiber.StatusBadRequest).SendString("category type is not valid")
+	}
+
+	categories, err := h.categoriesService.GetAll(c.Context(), username, categoryType)
 	if err != nil {
 		return err
 	}
