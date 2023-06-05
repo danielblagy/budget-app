@@ -15,8 +15,8 @@ func (h handler) SetupRoutes() {
 	accessGroup.Post("/login", h.LogIn)
 
 	categoriesGroup := h.app.Group("categories")
-	categoriesGroup.Get("/", h.GetCategories)
-	categoriesGroup.Get("/:id", h.GetCategory)
+	categoriesGroup.Get("/:type", h.GetCategories)
+	categoriesGroup.Get("/by_id/:id", h.GetCategory)
 	categoriesGroup.Post("/", h.CreateCategory)
 	categoriesGroup.Put("/", h.UpdateCategory)
 	categoriesGroup.Delete("/:id", h.DeleteCategory)
