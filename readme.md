@@ -1,6 +1,7 @@
 # budget-app
 
 * [Quickstart](#quickstart)
+* [Documentation](#documentation)
 * [Dependencies](#dependencies)
 * [Make Commands](#make-commands)
 
@@ -20,6 +21,10 @@ Run REST server
 ```
 make run
 ```
+
+## Documentation
+
+Access full documentation on REST API is [here](documentation.md).
 
 ## Dependencies
 
