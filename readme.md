@@ -1,9 +1,20 @@
 # budget-app
 
+* [Introduction](#introduction)
 * [Quickstart](#quickstart)
 * [Documentation](#documentation)
 * [Dependencies](#dependencies)
 * [Make Commands](#make-commands)
+
+## Introduction 
+
+Budget-app is a personal finance app (cash organizer) with the following functionality: 
+- Register in the application
+- Log in to the application (if you have an account)
+- View/add/edit/delete *Categories*
+- View/add/edit/delete *Expenses*
+- View/add/edit/delete *Incomes*
+- View Reports
 
 ## Quickstart
 
