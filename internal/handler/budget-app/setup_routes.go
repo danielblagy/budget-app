@@ -3,7 +3,9 @@ package budget_app
 func (h handler) SetupRoutes() {
 	h.app.Get("/", h.Greet)
 
-	usersGroup := h.app.Group("users")
+	v1Group := h.app.Group("v1")
+
+	usersGroup := v1Group.Group("users")
 	usersGroup.Get("/me", h.Me)
 	usersGroup.Get("/", h.GetUsers)
 	usersGroup.Get("/:username", h.GetUser)
@@ -11,10 +13,10 @@ func (h handler) SetupRoutes() {
 	// TODO update password using JWT token usersGroup.Put("/", h.UpdateUser)
 	// TODO delete using JWT token usersGroup.Delete("/", h.DeleteUser)
 
-	accessGroup := h.app.Group("access")
+	accessGroup := v1Group.Group("access")
 	accessGroup.Post("/login", h.LogIn)
 
-	categoriesGroup := h.app.Group("categories")
+	categoriesGroup := v1Group.Group("categories")
 	categoriesGroup.Get("/:type", h.GetCategories)
 	categoriesGroup.Get("/by_id/:id", h.GetCategory)
 	categoriesGroup.Post("/", h.CreateCategory)
