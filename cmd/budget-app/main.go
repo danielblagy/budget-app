@@ -16,9 +16,12 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 )
 
 const envDatabaseUrl = "DATABASE_URL"
+const envRedisAddress = "REDIS_ADDRESS"
+const envRedisPassword = "REDIS_PASSWORD"
 
 func main() {
 	// load environment variables from .env file
@@ -28,13 +31,28 @@ func main() {
 	}
 	log.Println(os.Getenv(envDatabaseUrl))
 
+	ctx := context.Background()
+
 	// connect to postgres database
-	conn, err := pgx.Connect(context.Background(), os.Getenv(envDatabaseUrl))
+	conn, err := pgx.Connect(ctx, os.Getenv(envDatabaseUrl))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Can't connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	defer conn.Close(ctx)
+
+	// connect to redis
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv(envRedisAddress),
+		Password: os.Getenv(envRedisPassword),
+		DB:       0, // use default DB
+	})
+
+	err = redisClient.Ping(ctx).Err()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't ping redis: %v\n", err)
+		os.Exit(1)
+	}
 
 	// validator
 
@@ -46,6 +64,7 @@ func main() {
 
 	// services
 
+	//cacheService := cache.NewService(redisClient)
 	usersService := users.NewService(conn)
 	accessService := access.NewService(usersService)
 	categoriesService := categories.NewService(categoriesQuery)
