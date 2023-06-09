@@ -9,6 +9,7 @@ import (
 	"github.com/danielblagy/budget-app/internal/db"
 	budget_app "github.com/danielblagy/budget-app/internal/handler/budget-app"
 	"github.com/danielblagy/budget-app/internal/service/access"
+	"github.com/danielblagy/budget-app/internal/service/cache"
 	"github.com/danielblagy/budget-app/internal/service/categories"
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
@@ -64,10 +65,10 @@ func main() {
 
 	// services
 
-	//cacheService := cache.NewService(redisClient)
+	cacheService := cache.NewService(redisClient)
 	usersService := users.NewService(conn)
 	accessService := access.NewService(usersService)
-	categoriesService := categories.NewService(categoriesQuery)
+	categoriesService := categories.NewService(categoriesQuery, cacheService)
 
 	// fiber app
 

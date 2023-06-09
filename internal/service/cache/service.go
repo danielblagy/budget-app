@@ -9,7 +9,7 @@ import (
 
 type Service interface {
 	Set(ctx context.Context, key string, value interface{}) error
-	Get(ctx context.Context, key string) (interface{}, bool, error)
+	Get(ctx context.Context, key string) ([]byte, bool, error)
 	SetWithExpiration(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 }
 

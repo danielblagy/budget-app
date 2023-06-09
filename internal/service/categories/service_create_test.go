@@ -30,7 +30,7 @@ func Test_Create(t *testing.T) {
 			On("Add", mock.AnythingOfType("*context.emptyCtx"), username, category).
 			Return(nil, expectedErr)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		_, err := service.Create(context.Background(), username, category)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't create category")
@@ -51,7 +51,7 @@ func Test_Create(t *testing.T) {
 			On("Add", mock.AnythingOfType("*context.emptyCtx"), username, category).
 			Return(expectedCreatedCategory, nil)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		createdCategory, err := service.Create(context.Background(), username, category)
 		require.Equal(t, expectedCreatedCategory, createdCategory)
 		require.NoError(t, err)

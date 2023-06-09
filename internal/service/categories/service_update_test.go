@@ -30,7 +30,7 @@ func Test_Update(t *testing.T) {
 			On("Update", mock.AnythingOfType("*context.emptyCtx"), username, category.ID, category.Name).
 			Return(nil, expectedErr)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		_, err := service.Update(context.Background(), username, category)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't update category")
@@ -51,7 +51,7 @@ func Test_Update(t *testing.T) {
 			On("Update", mock.AnythingOfType("*context.emptyCtx"), username, category.ID, category.Name).
 			Return(expectedUpdatedCategory, nil)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		updatedCategory, err := service.Update(context.Background(), username, category)
 		require.NoError(t, err)
 		require.Equal(t, expectedUpdatedCategory, updatedCategory)

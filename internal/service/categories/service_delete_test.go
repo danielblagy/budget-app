@@ -27,7 +27,7 @@ func Test_Delete(t *testing.T) {
 			On("Delete", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(nil, expectedErr)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		_, err := service.Delete(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't delete category")
@@ -48,7 +48,7 @@ func Test_Delete(t *testing.T) {
 			On("Delete", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(expectedCategory, nil)
 
-		service := NewService(categoriesQuery)
+		service := NewService(categoriesQuery, nil)
 		category, err := service.Delete(context.Background(), username, categoryID)
 		require.NoError(t, err)
 		require.Equal(t, expectedCategory, category)
