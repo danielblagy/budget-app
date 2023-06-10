@@ -7,6 +7,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=Service --case=underscore
+
 type Service interface {
 	// GetAll retuns users with omitted Password field (empty string)
 	GetAll(ctx context.Context) ([]*model.User, error)
