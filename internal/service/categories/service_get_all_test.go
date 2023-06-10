@@ -40,8 +40,14 @@ func Test_GetAll(t *testing.T) {
 			{
 				ID:     10,
 				UserID: username,
-				Name:   "test category name",
-				Type:   model.CategoryTypeIncome,
+				Name:   "test category name1",
+				Type:   model.CategoryTypeExpense,
+			},
+			{
+				ID:     11,
+				UserID: username,
+				Name:   "test category name2",
+				Type:   model.CategoryTypeExpense,
 			},
 		}
 
