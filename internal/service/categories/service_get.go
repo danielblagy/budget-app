@@ -20,7 +20,10 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 	}
 	if ok {
 		var category *model.Category
-		json.Unmarshal(cacheValueBytes, &category)
+		if unmarshalErr := json.Unmarshal(cacheValueBytes, &category); unmarshalErr != nil {
+			return nil, unmarshalErr
+		}
+
 		return category, nil
 	}
 
