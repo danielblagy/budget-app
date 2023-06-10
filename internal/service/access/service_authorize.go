@@ -20,6 +20,9 @@ func (s service) Authorize(ctx context.Context, token string) (string, error) {
 
 	username, err := parseJwtToken(token)
 	if err != nil {
+		if errors.Is(err, errTokenExpired) {
+			return "", errors.Wrap(ErrNotAuthorized, "token has expired")
+		}
 		if errors.Is(err, errInvalidToken) {
 			return "", errors.Wrap(ErrNotAuthorized, "token is invalid")
 		}
