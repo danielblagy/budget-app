@@ -6,7 +6,5 @@ create table users (
     password_hash   text            not null
 );
 
-insert into users(username, email, full_name, password_hash) values ('user1', 'user1@mymail.com', 'John', '');
-insert into users(username, email, full_name, password_hash) values ('dblagy', 'dblagy@mymail.com', 'Daniel', '');
-insert into users(username, email, full_name, password_hash) values ('randomname123', 'randomname123@mymail.com', 'Sally', '');
-insert into users(username, email, full_name, password_hash) values ('user2', 'user2@mymail.com', 'Augustus', '');
+insert into users(username, email, full_name, password_hash)
+values ('testusername111', 'testemail111@mail.com', 'John Doe', '$2a$10$eB3Axm6ikuREMCwYlxgrgOuEqjxL7r20ZIgaWziIL8JajzuXRQ6HW');
