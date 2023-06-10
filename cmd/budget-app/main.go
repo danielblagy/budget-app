@@ -71,7 +71,7 @@ func main() {
 
 	cacheService := cache.NewService(redisClient)
 	usersService := users.NewService(conn)
-	accessService := access.NewService(usersService)
+	accessService := access.NewService(usersService, cacheService)
 	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService)
 
 	// fiber app
