@@ -5,6 +5,8 @@ import (
 
 	"github.com/danielblagy/budget-app/internal/db"
 	"github.com/danielblagy/budget-app/internal/model"
+	"github.com/danielblagy/budget-app/internal/service/cache"
+	log "github.com/inconshreveable/log15"
 )
 
 type Service interface {
@@ -17,11 +19,15 @@ type Service interface {
 }
 
 type service struct {
+	logger          log.Logger
 	categoriesQuery db.CategoriesQuery
+	cacheService    cache.Service
 }
 
-func NewService(categoriesQuery db.CategoriesQuery) Service {
+func NewService(logger log.Logger, categoriesQuery db.CategoriesQuery, cacheService cache.Service) Service {
 	return &service{
+		logger:          logger,
 		categoriesQuery: categoriesQuery,
+		cacheService:    cacheService,
 	}
 }
