@@ -3,7 +3,6 @@ package categories
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/jackc/pgx/v5"
@@ -21,8 +20,7 @@ func (s service) Update(ctx context.Context, username string, updateData *model.
 
 	err = s.cacheService.Set(ctx, fmt.Sprintf("%s:category:%d", username, updatedCategory.ID), updatedCategory)
 	if err != nil {
-		// TODO log the error with custom logger
-		log.Println("[Error]", err)
+		return nil, errors.Wrap(err, "can't update category cache")
 	}
 
 	return updatedCategory, nil

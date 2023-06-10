@@ -7,6 +7,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=Service --case=underscore
+
 type Service interface {
 	Set(ctx context.Context, key string, value interface{}) error
 	Get(ctx context.Context, key string) ([]byte, bool, error)

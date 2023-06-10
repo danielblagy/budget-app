@@ -3,7 +3,6 @@ package categories
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/pkg/errors"
@@ -17,8 +16,7 @@ func (s service) Create(ctx context.Context, username string, category *model.Cr
 
 	err = s.cacheService.Set(ctx, fmt.Sprintf("%s:category:%d", username, createdCategory.ID), createdCategory)
 	if err != nil {
-		// TODO log the error with custom logger
-		log.Println("[Error]", err)
+		s.logger.Error("can't add to created category to cache", "err", err.Error())
 	}
 
 	return createdCategory, nil

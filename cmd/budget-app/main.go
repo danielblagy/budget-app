@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/danielblagy/budget-app/internal/db"
@@ -14,7 +13,8 @@ import (
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
+	fiberLogger "github.com/gofiber/fiber/v2/middleware/logger"
+	log "github.com/inconshreveable/log15"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
@@ -25,19 +25,23 @@ const envRedisAddress = "REDIS_ADDRESS"
 const envRedisPassword = "REDIS_PASSWORD"
 
 func main() {
+	// logger
+
+	logger := log.New()
+
 	// load environment variables from .env file
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		logger.Crit("can't load .env file", "err", err.Error())
+		os.Exit(1)
 	}
-	log.Println(os.Getenv(envDatabaseUrl))
 
 	ctx := context.Background()
 
 	// connect to postgres database
 	conn, err := pgx.Connect(ctx, os.Getenv(envDatabaseUrl))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Can't connect to database: %v\n", err)
+		logger.Crit("can't connect to database", "err", err.Error())
 		os.Exit(1)
 	}
 	defer conn.Close(ctx)
@@ -68,12 +72,12 @@ func main() {
 	cacheService := cache.NewService(redisClient)
 	usersService := users.NewService(conn)
 	accessService := access.NewService(usersService)
-	categoriesService := categories.NewService(categoriesQuery, cacheService)
+	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService)
 
 	// fiber app
 
 	app := fiber.New()
-	app.Use(logger.New())
+	app.Use(fiberLogger.New())
 
 	// handlers
 
@@ -82,5 +86,7 @@ func main() {
 
 	// start the app
 
-	log.Fatal(app.Listen(":5000"))
+	if startAppErr := app.Listen(":5000"); startAppErr != nil {
+		logger.Crit("can't start fiber app", "err", startAppErr.Error())
+	}
 }
