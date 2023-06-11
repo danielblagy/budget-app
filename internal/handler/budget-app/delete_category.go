@@ -8,9 +8,9 @@ import (
 )
 
 func (h handler) DeleteCategory(c *fiber.Ctx) error {
-	username, err := h.authorize(c)
+	username, statusCode, err := h.authorize(c)
 	if err != nil {
-		return err
+		return c.Status(statusCode).SendString(err.Error())
 	}
 
 	categoryID, err := c.ParamsInt("id", -1)

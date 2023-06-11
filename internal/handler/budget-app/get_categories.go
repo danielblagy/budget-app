@@ -11,9 +11,9 @@ var validCategoryTypes = map[model.CategoryType]struct{}{
 }
 
 func (h handler) GetCategories(c *fiber.Ctx) error {
-	username, err := h.authorize(c)
+	username, statusCode, err := h.authorize(c)
 	if err != nil {
-		return err
+		return c.Status(statusCode).SendString(err.Error())
 	}
 
 	categoryTypeRaw := c.Params("type")

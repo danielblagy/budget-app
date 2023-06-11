@@ -22,6 +22,7 @@ type Handler interface {
 	CreateCategory(c *fiber.Ctx) error
 	UpdateCategory(c *fiber.Ctx) error
 	DeleteCategory(c *fiber.Ctx) error
+	LogOut(c *fiber.Ctx) error
 }
 
 type handler struct {

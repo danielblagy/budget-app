@@ -45,6 +45,13 @@ Errors
 | Not Found      | 404  | user with username not found
 | Forbidden | 403 | password is incorrect
 
+### POST v1/access/logout
+
+🔑 Requires user to be logged in.
+
+1. Deletes http-only cookies storing jwt access and refresh tokens.
+2. Adds jwt tokens to the blacklist, rendering them invalid.
+
 ## v1/users
 
 TODO
