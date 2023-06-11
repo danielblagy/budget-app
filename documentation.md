@@ -52,6 +52,13 @@ Errors
 1. Deletes http-only cookies storing jwt access and refresh tokens.
 2. Adds jwt tokens to the blacklist, rendering them invalid.
 
+### POST v1/access/refresh
+
+🔑 Requires user to be logged in.
+
+1. Blacklists current access and refresh tokens.
+2. Issues new access and refresh token pair.
+
 ## v1/users
 
 TODO
