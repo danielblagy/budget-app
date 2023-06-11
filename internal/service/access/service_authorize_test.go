@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	cacheMocks "github.com/danielblagy/budget-app/internal/service/cache/mocks"
+	persistentStoreMocks "github.com/danielblagy/budget-app/internal/service/persistent-store/mocks"
 	usersMocks "github.com/danielblagy/budget-app/internal/service/users/mocks"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/mock"
@@ -26,12 +26,12 @@ func Test_Authorize(t *testing.T) {
 		token, generateTokenErr := generateJwtToken("someuser", accessTokenDuration)
 		require.NoError(t, generateTokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreService := new(persistentStoreMocks.Service)
+		persistentStoreService.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, expectedErr)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreService)
 		_, err := service.Authorize(context.Background(), token)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't check if token is blacklisted")
@@ -43,12 +43,12 @@ func Test_Authorize(t *testing.T) {
 		token, generateTokenErr := generateJwtToken("someuser", accessTokenDuration)
 		require.NoError(t, generateTokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreService := new(persistentStoreMocks.Service)
+		persistentStoreService.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, true, nil)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreService)
 		_, err := service.Authorize(context.Background(), token)
 		require.ErrorIs(t, err, ErrNotAuthorized)
 	})
@@ -68,12 +68,12 @@ func Test_Authorize(t *testing.T) {
 		token, tokenErr := tokenObj.SignedString([]byte(os.Getenv(jwtSecretKeyEnvVariable)))
 		require.NoError(t, tokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreMocks := new(persistentStoreMocks.Service)
+		persistentStoreMocks.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, nil)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreMocks)
 		_, err := service.Authorize(context.Background(), token)
 		require.ErrorIs(t, err, ErrNotAuthorized)
 		require.ErrorContains(t, err, "token has expired")
@@ -95,12 +95,12 @@ func Test_Authorize(t *testing.T) {
 		require.NoError(t, tokenErr)
 		token += "xxxxx"
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreMocks := new(persistentStoreMocks.Service)
+		persistentStoreMocks.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, nil)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreMocks)
 		_, err := service.Authorize(context.Background(), token)
 		require.NotNil(t, err)
 		require.ErrorContains(t, err, "can't parse jwt token")
@@ -125,8 +125,8 @@ func Test_Authorize(t *testing.T) {
 		token, tokenErr := tokenObj.SignedString([]byte(os.Getenv(jwtSecretKeyEnvVariable)))
 		require.NoError(t, tokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreMocks := new(persistentStoreMocks.Service)
+		persistentStoreMocks.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, nil)
 
@@ -135,7 +135,7 @@ func Test_Authorize(t *testing.T) {
 			On("Exists", mock.AnythingOfType("*context.emptyCtx"), username).
 			Return(false, expectedErr)
 
-		service := NewService(usersService, cacheService)
+		service := NewService(usersService, persistentStoreMocks)
 		_, err := service.Authorize(context.Background(), token)
 		require.ErrorIs(t, err, expectedErr)
 	})
@@ -157,8 +157,8 @@ func Test_Authorize(t *testing.T) {
 		token, tokenErr := tokenObj.SignedString([]byte(os.Getenv(jwtSecretKeyEnvVariable)))
 		require.NoError(t, tokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreMocks := new(persistentStoreMocks.Service)
+		persistentStoreMocks.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, nil)
 
@@ -167,7 +167,7 @@ func Test_Authorize(t *testing.T) {
 			On("Exists", mock.AnythingOfType("*context.emptyCtx"), username).
 			Return(false, nil)
 
-		service := NewService(usersService, cacheService)
+		service := NewService(usersService, persistentStoreMocks)
 		_, err := service.Authorize(context.Background(), token)
 		require.ErrorIs(t, err, ErrNotAuthorized)
 		require.ErrorContains(t, err, "user doesn't exist")
@@ -190,8 +190,8 @@ func Test_Authorize(t *testing.T) {
 		token, tokenErr := tokenObj.SignedString([]byte(os.Getenv(jwtSecretKeyEnvVariable)))
 		require.NoError(t, tokenErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreMocks := new(persistentStoreMocks.Service)
+		persistentStoreMocks.
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("token-access:%s", token)).
 			Return(nil, false, nil)
 
@@ -200,7 +200,7 @@ func Test_Authorize(t *testing.T) {
 			On("Exists", mock.AnythingOfType("*context.emptyCtx"), username).
 			Return(true, nil)
 
-		service := NewService(usersService, cacheService)
+		service := NewService(usersService, persistentStoreMocks)
 		resultingUsername, err := service.Authorize(context.Background(), token)
 		require.NoError(t, err)
 		require.Equal(t, username, resultingUsername)

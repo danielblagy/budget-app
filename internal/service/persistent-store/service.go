@@ -1,7 +1,8 @@
-package cache
+package persistent_store
 
 import (
 	"context"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -9,9 +10,8 @@ import (
 //go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=Service --case=underscore
 
 type Service interface {
-	Set(ctx context.Context, key string, value interface{}) error
+	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 	Get(ctx context.Context, key string) ([]byte, bool, error)
-	Delete(ctx context.Context, key string) error
 }
 
 type service struct {

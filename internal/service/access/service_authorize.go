@@ -10,7 +10,7 @@ import (
 var ErrNotAuthorized = errors.New("not authorized")
 
 func (s service) Authorize(ctx context.Context, token string) (string, error) {
-	_, ok, err := s.cacheService.Get(ctx, fmt.Sprintf("token-access:%s", token))
+	_, ok, err := s.persistentStoreService.Get(ctx, fmt.Sprintf("token-access:%s", token))
 	if err != nil {
 		return "", errors.Wrap(err, "can't check if token is blacklisted")
 	}
