@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	cacheMocks "github.com/danielblagy/budget-app/internal/service/cache/mocks"
+	persistentStoreMocks "github.com/danielblagy/budget-app/internal/service/persistent-store/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -24,10 +24,10 @@ func Test_LogOut(t *testing.T) {
 		accessToken, tokenGenerateErr := generateJwtToken(username, accessTokenDuration)
 		require.NoError(t, tokenGenerateErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreService := new(persistentStoreMocks.Service)
+		persistentStoreService.
 			On(
-				"SetWithExpiration",
+				"Set",
 				mock.AnythingOfType("*context.emptyCtx"),
 				fmt.Sprintf("token-access:%s", accessToken),
 				accessToken,
@@ -35,7 +35,7 @@ func Test_LogOut(t *testing.T) {
 			).
 			Return(expectedErr)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreService)
 		err := service.LogOut(context.Background(), accessToken, "")
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't blacklist access token")
@@ -54,19 +54,19 @@ func Test_LogOut(t *testing.T) {
 		refreshToken, tokenGenerateErr := generateJwtToken(username, refreshTokenDuration)
 		require.NoError(t, tokenGenerateErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreService := new(persistentStoreMocks.Service)
+		persistentStoreService.
 			On(
-				"SetWithExpiration",
+				"Set",
 				mock.AnythingOfType("*context.emptyCtx"),
 				fmt.Sprintf("token-access:%s", accessToken),
 				accessToken,
 				accessTokenDuration,
 			).
 			Return(nil)
-		cacheService.
+		persistentStoreService.
 			On(
-				"SetWithExpiration",
+				"Set",
 				mock.AnythingOfType("*context.emptyCtx"),
 				fmt.Sprintf("token-refresh:%s", refreshToken),
 				refreshToken,
@@ -74,7 +74,7 @@ func Test_LogOut(t *testing.T) {
 			).
 			Return(expectedErr)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreService)
 		err := service.LogOut(context.Background(), accessToken, refreshToken)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't blacklist refresh token")
@@ -91,19 +91,19 @@ func Test_LogOut(t *testing.T) {
 		refreshToken, tokenGenerateErr := generateJwtToken(username, refreshTokenDuration)
 		require.NoError(t, tokenGenerateErr)
 
-		cacheService := new(cacheMocks.Service)
-		cacheService.
+		persistentStoreService := new(persistentStoreMocks.Service)
+		persistentStoreService.
 			On(
-				"SetWithExpiration",
+				"Set",
 				mock.AnythingOfType("*context.emptyCtx"),
 				fmt.Sprintf("token-access:%s", accessToken),
 				accessToken,
 				accessTokenDuration,
 			).
 			Return(nil)
-		cacheService.
+		persistentStoreService.
 			On(
-				"SetWithExpiration",
+				"Set",
 				mock.AnythingOfType("*context.emptyCtx"),
 				fmt.Sprintf("token-refresh:%s", refreshToken),
 				refreshToken,
@@ -111,7 +111,7 @@ func Test_LogOut(t *testing.T) {
 			).
 			Return(nil)
 
-		service := NewService(nil, cacheService)
+		service := NewService(nil, persistentStoreService)
 		err := service.LogOut(context.Background(), accessToken, refreshToken)
 		require.NoError(t, err)
 	})

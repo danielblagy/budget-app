@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/danielblagy/budget-app/internal/model"
-	"github.com/danielblagy/budget-app/internal/service/cache"
+	persistent_store "github.com/danielblagy/budget-app/internal/service/persistent-store"
 	"github.com/danielblagy/budget-app/internal/service/users"
 )
 
@@ -17,13 +17,13 @@ type Service interface {
 }
 
 type service struct {
-	usersService users.Service
-	cacheService cache.Service
+	usersService           users.Service
+	persistentStoreService persistent_store.Service
 }
 
-func NewService(usersService users.Service, cacheService cache.Service) Service {
+func NewService(usersService users.Service, persistentStoreService persistent_store.Service) Service {
 	return &service{
-		usersService: usersService,
-		cacheService: cacheService,
+		usersService:           usersService,
+		persistentStoreService: persistentStoreService,
 	}
 }
