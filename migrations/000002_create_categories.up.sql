@@ -9,9 +9,8 @@ create table categories (
 
 create unique index categories_unique_idx on categories(user_id, type, name);
 
-insert into categories(user_id, name, type) values ('dblagy', 'home', 'expense');
-insert into categories(user_id, name, type) values ('dblagy', 'groceries', 'expense');
-insert into categories(user_id, name, type) values ('dblagy', 'fun', 'expense');
-insert into categories(user_id, name, type) values ('dblagy', 'eating out', 'expense');
-insert into categories(user_id, name, type) values ('dblagy', 'day job', 'income');
-insert into categories(user_id, name, type) values ('dblagy', 'vigilante', 'income');
+insert into categories(user_id, name, type) values ('testusername111', 'day job', 'income');
+insert into categories(user_id, name, type) values ('testusername111', 'vigilante', 'income');
+insert into categories(user_id, name, type) values ('testusername111', 'groceries', 'expense');
+insert into categories(user_id, name, type) values ('testusername111', 'fun', 'expense');
+insert into categories(user_id, name, type) values ('testusername111', 'eating out', 'expense');

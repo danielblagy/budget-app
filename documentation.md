@@ -2,6 +2,7 @@
 
 * [Introduction](#introduction)
 * [Access](#access)
+* [Test Data for Manual Testing](#test-data)
 
 ## Introduction
 
@@ -12,6 +13,8 @@ To use most of the API handlers you need to be logged in using /access/login, se
 1. To create a user, use [POST /users](#post-users).
 2. Then log in with created user's credentials via [POST /access/login](#post-accesslogin).
 3. You are in!
+
+Test user with test data is automatically created on migrate-up, check out [test data section](#test-data) for more information.
 
 ## v1/access
 
@@ -41,6 +44,13 @@ Errors
 | Bad Request         | 400  | username or password are not valid
 | Not Found      | 404  | user with username not found
 | Forbidden | 403 | password is incorrect
+
+### POST v1/access/logout
+
+🔑 Requires user to be logged in.
+
+1. Deletes http-only cookies storing jwt access and refresh tokens.
+2. Adds jwt tokens to the blacklist, rendering them invalid.
 
 ## v1/users
 
@@ -75,3 +85,16 @@ Errors
 | Bad Request         | 400  | invalid json, username may only contain letters, numbers, underscores, and dashes
 | Conflict      | 409  | username or email is taken
 | Forbidden | 403 | password is incorrect
+
+## Test Data
+
+On migrate-up, the user and some test user data is created.
+
+To start testing with test user, log in via [POST v1/access/login](#post-v1accesslogin).
+Body
+```
+{
+    "username": "testusername111",
+    "password": "password111"
+}
+```
