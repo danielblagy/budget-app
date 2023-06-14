@@ -10,6 +10,7 @@ import (
 	"github.com/danielblagy/budget-app/internal/service/access"
 	"github.com/danielblagy/budget-app/internal/service/cache"
 	"github.com/danielblagy/budget-app/internal/service/categories"
+	persistent_store "github.com/danielblagy/budget-app/internal/service/persistent-store"
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -21,8 +22,10 @@ import (
 )
 
 const envDatabaseUrl = "DATABASE_URL"
-const envRedisAddress = "REDIS_ADDRESS"
-const envRedisPassword = "REDIS_PASSWORD"
+const envCacheAddress = "CACHE_ADDRESS"
+const envCachePassword = "CACHE_PASSWORD"
+const envPersistentStoreAddress = "PERSISTENT_STORE_ADDRESS"
+const envPersistentStorePassword = "PERSISTENT_STORE_PASSWORD"
 
 func main() {
 	// logger
@@ -46,16 +49,31 @@ func main() {
 	}
 	defer conn.Close(ctx)
 
-	// connect to redis
-	redisClient := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv(envRedisAddress),
-		Password: os.Getenv(envRedisPassword),
+	// connect to redis cache server
+
+	redisCacheClient := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv(envCacheAddress),
+		Password: os.Getenv(envCachePassword),
 		DB:       0, // use default DB
 	})
 
-	err = redisClient.Ping(ctx).Err()
+	err = redisCacheClient.Ping(ctx).Err()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Can't ping redis: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Can't ping redis cache server: %v\n", err)
+		os.Exit(1)
+	}
+
+	// connect to redis persistent store server
+
+	redisPersistentStoreClient := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv(envPersistentStoreAddress),
+		Password: os.Getenv(envPersistentStorePassword),
+		DB:       0, // use default DB
+	})
+
+	err = redisPersistentStoreClient.Ping(ctx).Err()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't ping redis persistent store server: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -69,9 +87,10 @@ func main() {
 
 	// services
 
-	cacheService := cache.NewService(redisClient)
+	cacheService := cache.NewService(redisCacheClient)
+	persistentStoreService := persistent_store.NewService(redisPersistentStoreClient)
 	usersService := users.NewService(conn)
-	accessService := access.NewService(usersService, cacheService)
+	accessService := access.NewService(usersService, persistentStoreService)
 	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService)
 
 	// fiber app
