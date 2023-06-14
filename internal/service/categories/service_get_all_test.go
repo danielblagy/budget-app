@@ -27,7 +27,7 @@ func Test_GetAll(t *testing.T) {
 			On("GetAll", mock.AnythingOfType("*context.emptyCtx"), username, categoryType).
 			Return(nil, expectedErr)
 
-		service := NewService(categoriesQuery)
+		service := NewService(nil, categoriesQuery, nil)
 		_, err := service.GetAll(context.Background(), username, categoryType)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't get categories")
@@ -56,7 +56,7 @@ func Test_GetAll(t *testing.T) {
 			On("GetAll", mock.AnythingOfType("*context.emptyCtx"), username, categoryType).
 			Return(expectedCategory, nil)
 
-		service := NewService(categoriesQuery)
+		service := NewService(nil, categoriesQuery, nil)
 		category, err := service.GetAll(context.Background(), username, categoryType)
 		require.NoError(t, err)
 		require.Equal(t, expectedCategory, category)
