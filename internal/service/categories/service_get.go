@@ -16,12 +16,12 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 	cacheKey := fmt.Sprintf("%s:category:%d", username, categoryID)
 	cacheValueBytes, ok, err := s.cacheService.Get(ctx, cacheKey)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "can't get category from cache")
 	}
 	if ok {
 		var category *model.Category
 		if unmarshalErr := json.Unmarshal(cacheValueBytes, &category); unmarshalErr != nil {
-			return nil, unmarshalErr
+			return nil, errors.Wrap(unmarshalErr, "can't unmarshal data")
 		}
 
 		return category, nil
