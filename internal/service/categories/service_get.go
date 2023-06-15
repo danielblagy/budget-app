@@ -16,7 +16,7 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 	cacheKey := fmt.Sprintf("%s:category:%d", username, categoryID)
 	cacheValueBytes, ok, err := s.cacheService.Get(ctx, cacheKey)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "can't get category from cache")
 	}
 	if ok {
 		var category *model.Category
@@ -37,7 +37,7 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 
 	err = s.cacheService.Set(ctx, cacheKey, category)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "can't set category cache")
 	}
 
 	return category, nil
