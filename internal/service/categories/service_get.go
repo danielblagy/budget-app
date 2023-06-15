@@ -21,7 +21,7 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 	if ok {
 		var category *model.Category
 		if unmarshalErr := json.Unmarshal(cacheValueBytes, &category); unmarshalErr != nil {
-			return nil, errors.Wrap(unmarshalErr, "can't unmarshal data")
+			return nil, unmarshalErr
 		}
 
 		return category, nil
@@ -37,7 +37,7 @@ func (s service) Get(ctx context.Context, username string, categoryID int64) (*m
 
 	err = s.cacheService.Set(ctx, cacheKey, category)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "can't set category cache")
 	}
 
 	return category, nil

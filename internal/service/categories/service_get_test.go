@@ -150,7 +150,7 @@ func Test_Get(t *testing.T) {
 		service := NewService(nil, categoriesQuery, cacheService)
 		_, err := service.Get(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
-		require.ErrorContains(t, err, "")
+		require.ErrorContains(t, err, "can't set category cache")
 	})
 
 	t.Run("success", func(t *testing.T) {
