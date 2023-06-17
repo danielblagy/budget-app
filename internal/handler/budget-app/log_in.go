@@ -43,6 +43,5 @@ func (h handler) LogIn(c *fiber.Ctx) error {
 		Value:    userTokens.RefreshToken,
 		HTTPOnly: true,
 	})
-
-	return c.JSON(userTokens)
+	return c.Status(fiber.StatusOK).SendString("successfully logged in")
 }

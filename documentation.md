@@ -33,8 +33,7 @@ Body
 Success response
 ```
 {
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VybmFtZTIiLCJleHAiOjE2ODYxNzIwNzgsIm5iZiI6MTY4NjE3MTE3OCwiaWF0IjoxNjg2MTcxMTc4fQ.Z0SBpqTK_mkHTwP9Re0xCiBA2iLyfgYpi_5PYp4vwAc",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VybmFtZTIiLCJleHAiOjE2ODc5ODU1NzgsIm5iZiI6MTY4NjE3MTE3OCwiaWF0IjoxNjg2MTcxMTc4fQ.YIz2yiZa94FOGH0qjFOu9FofbANw_mGmHAU1qDxyxqk"
+    "successfully logged in"
 }
 ```
 
