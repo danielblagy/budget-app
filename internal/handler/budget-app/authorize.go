@@ -7,19 +7,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (h handler) authorize(c *fiber.Ctx) (string, error) {
+// authorize returns username, 200, nil on success,
+// empty string, status code, error on failure
+func (h handler) authorize(c *fiber.Ctx) (string, int, error) {
 	accessToken := c.Cookies(accessTokenCookieName)
 	if len(accessToken) == 0 {
-		return "", c.Status(fiber.StatusBadRequest).SendString("user is not logged in")
+		return "", fiber.StatusUnauthorized, errors.New("user is not logged in")
 	}
 
 	username, err := h.accessService.Authorize(c.Context(), accessToken)
 	if err != nil {
 		if errors.Is(err, access.ErrNotAuthorized) {
-			return "", c.Status(fiber.StatusUnauthorized).SendString(err.Error())
+			return "", fiber.StatusUnauthorized, err
 		}
-		return "", err
+		return "", fiber.StatusInternalServerError, err
 	}
 
-	return username, nil
+	return username, fiber.StatusOK, nil
 }

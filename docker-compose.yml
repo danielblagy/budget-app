@@ -10,3 +10,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: budget_app
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --port 6379 --maxmemory 100mb --maxmemory-policy allkeys-lfu --activedefrag yes --save "" --requirepass redispass123
+  persistent-store:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6377:6377'
+    command: redis-server --port 6377 --save 20 1 --loglevel warning --requirepass redispass123

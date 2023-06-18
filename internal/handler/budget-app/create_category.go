@@ -6,9 +6,9 @@ import (
 )
 
 func (h handler) CreateCategory(c *fiber.Ctx) error {
-	username, err := h.authorize(c)
+	username, statusCode, err := h.authorize(c)
 	if err != nil {
-		return err
+		return c.Status(statusCode).SendString(err.Error())
 	}
 
 	// TODO now throws err if provided type is not valid

@@ -15,6 +15,8 @@ func (h handler) SetupRoutes() {
 
 	accessGroup := v1Group.Group("access")
 	accessGroup.Post("/login", h.LogIn)
+	accessGroup.Post("/logout", h.LogOut)
+	accessGroup.Post("/refresh", h.Refresh)
 
 	categoriesGroup := v1Group.Group("categories")
 	categoriesGroup.Get("/:type", h.GetCategories)
