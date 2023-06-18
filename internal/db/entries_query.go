@@ -39,7 +39,7 @@ func (q entriesQuery) GetAll(ctx context.Context, username string, entryType mod
 }
 
 func (q entriesQuery) GetByID(ctx context.Context, username string, entryID int64) (*model.Entry, error) {
-	var ErrNotFound = errors.New("category not found")
+	var ErrNotFound = errors.New("entry not found")
 	var getQueryTemplate = "select id, user_id, name, type from categories where id = '%d' and user_id = '%s'"
 
 	var entry model.Entry
