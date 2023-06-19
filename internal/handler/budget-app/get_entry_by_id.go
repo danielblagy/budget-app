@@ -8,9 +8,9 @@ import (
 )
 
 func (h handler) GetEntryByID(c *fiber.Ctx) error {
-	username, err := h.authorize(c)
+	username, statusCode, err := h.authorize(c)
 	if err != nil {
-		return err //return err in case user isn't authorized
+		return c.Status(statusCode).SendString(err.Error()) //return err in case user isn't authorized
 	}
 
 	entryID, err := c.ParamsInt("id", -1)

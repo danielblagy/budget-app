@@ -11,9 +11,9 @@ var validEntryTypes = map[model.EntryType]struct{}{
 }
 
 func (h handler) GetEntries(c *fiber.Ctx) error {
-	username, err := h.authorize(c)
+	username, statusCode, err := h.authorize(c)
 	if err != nil {
-		return err
+		return c.Status(statusCode).SendString(err.Error())
 	}
 
 	entryTypeRaw := c.Params("type")

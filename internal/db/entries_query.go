@@ -39,14 +39,14 @@ func (q entriesQuery) GetAll(ctx context.Context, username string, entryType mod
 }
 
 func (q entriesQuery) GetByID(ctx context.Context, username string, entryID int64) (*model.Entry, error) {
-	var ErrNotFound = errors.New("entry not found")
-	var getQueryTemplate = "select id, user_id, name, type from categories where id = '%d' and user_id = '%s'"
+	//var ErrNotFound = errors.New("entry not found")
+	var getQueryTemplate = "select id, user_id, category_id, amount, date, description, type from entries where id = '%d' and user_id = '%s'"
 
 	var entry model.Entry
 
 	err := pgxscan.Get(ctx, q.db, &entry, fmt.Sprintf(getQueryTemplate, entryID, username))
 	if err != nil {
-		return nil, ErrNotFound
+		return nil, err
 	}
 
 	return &entry, nil
