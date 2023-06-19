@@ -3,6 +3,7 @@ package budget_app
 import (
 	"github.com/danielblagy/budget-app/internal/service/access"
 	"github.com/danielblagy/budget-app/internal/service/categories"
+	"github.com/danielblagy/budget-app/internal/service/entries"
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -22,6 +23,8 @@ type Handler interface {
 	CreateCategory(c *fiber.Ctx) error
 	UpdateCategory(c *fiber.Ctx) error
 	DeleteCategory(c *fiber.Ctx) error
+	GetEntryByID(c *fiber.Ctx) error
+	GetEntries(c *fiber.Ctx) error
 	LogIn(c *fiber.Ctx) error
 	LogOut(c *fiber.Ctx) error
 	Refresh(c *fiber.Ctx) error
@@ -34,14 +37,16 @@ type handler struct {
 	usersService      users.Service
 	accessService     access.Service
 	categoriesService categories.Service
+	entriesService    entries.Service
 }
 
-func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service, categoriesService categories.Service) Handler {
+func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service, categoriesService categories.Service, entriesService entries.Service) Handler {
 	return &handler{
 		validate:          validate,
 		app:               app,
 		usersService:      usersService,
 		accessService:     accessService,
 		categoriesService: categoriesService,
+		entriesService:    entriesService,
 	}
 }
