@@ -9,13 +9,17 @@ on:
 jobs:
   check-migrations:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: sbdchd/squawk-action@v1
-        with:
-          pattern: "migrations/*.sql"
-          version: "latest"
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Mandatory unless "latest" is set below.
+    - uses: ariga/atlas-action@v0
+      with:
+        dir: migrations
+        dir-format: golang-migrate
   
   build:
     needs: [ check-migrations ]
