@@ -1,9 +1,9 @@
 # budget-app REST API Documentation
 
 * [Introduction](#introduction)
-* [Access](#access)
-* [Users](#users)
-* [Categories](#categories)
+* [Access](#v1access)
+* [Users](#v1users)
+* [Categories](#v1categories)
 * [Test Data for Manual Testing](#test-data)
 
 ## Introduction
