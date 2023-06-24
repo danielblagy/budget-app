@@ -26,4 +26,12 @@ run:
 
 .PHONY: test
 test:
-	go test ./...
+	go test -cover ./...
+
+.PHONY: build
+build:
+	go build -o build/ cmd/budget-app/main.go
+
+.PHONY: lint
+lint:
+	staticcheck ./...
