@@ -2,6 +2,7 @@
 
 * [Introduction](#introduction)
 * [Access](#access)
+* [Entries](#v1entries)
 * [Test Data for Manual Testing](#test-data)
 
 ## Introduction
@@ -91,6 +92,181 @@ Errors
 | Bad Request         | 400  | invalid json, username may only contain letters, numbers, underscores, and dashes
 | Conflict      | 409  | username or email is taken
 | Forbidden | 403 | password is incorrect
+
+## v1/entries
+
+Entries of user's expenses and incomes. Used by users to view the history of financial transactions. 
+
+### GET v1/entries/:type
+
+🔑 Requires user to be logged in.
+
+Get all user's entries of type. 
+
+Possible types
+```
+*/expense
+*/income
+```
+Success response
+```
+[
+  {
+    "id": 3,
+    "user_id": "testusername111",
+    "category_id": 25,
+    "amount": 1257.6,
+    "date": "2006-12-08T00:00:00Z",
+    "description": "bread",
+    "type": "expense"
+  },
+  {
+    "id": 4,
+    "user_id": "testusername111",
+    "category_id": 3,
+    "amount": 850.2,
+    "date": "2023-06-09T00:00:00Z",
+    "description": "milk and eggs",
+    "type": "expense"
+  }
+]
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | entry type is not valid
+| Unauthorized      | 401  | token has expired or user not authorized
+
+### GET v1/entries/by_id/:id
+
+🔑 Requires user to be logged in.
+
+Get user's entry by entry id.
+
+Input example
+```
+GET v1/entries/by_id/3
+```
+Success response
+```
+{
+  "id": 3,
+  "user_id": "testusername111",
+  "category_id": 25,
+  "amount": 1257.6,
+  "date": "2006-12-08T00:00:00Z",
+  "description": "bread",
+  "type": "expense"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | entry id is not valid
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | entry not found
+
+### POST v1/entries
+
+🔑 Requires user to be logged in.
+
+Create entry
+
+Body
+```
+{
+    "category_id": 25,
+    "amount": 1257.60,
+    "date": "2023-07-02",
+    "description" : "bread",
+    "type": "expense"
+}
+```
+Success response
+```
+{
+  "id": 8,
+  "user_id": "testusername111",
+  "category_id": 25,
+  "amount": 1257.6,
+  "date": "2023-07-02T00:00:00Z",
+  "description": "bread",
+  "type": "expense"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | params are not valid or missing
+| Unauthorized      | 401  | token has expired or user not authorized
+
+### PUT v1/entries/:entry_id
+
+🔑 Requires user to be logged in.
+
+Update entry
+
+Input example
+```
+PUT v1/entries/3
+```
+Body
+```
+{
+    "category_id": 25,
+    "amount": 1800.60,
+    "date": "2023-07-01",
+    "description" : "bread and eggs",
+    "type": "expense"
+}
+```
+Success response(updated data)
+```
+{
+  "id": 3,
+  "user_id": "testusername111",
+  "category_id": 25,
+  "amount": 1800.6,
+  "date": "2023-07-01T00:00:00Z",
+  "description": "bread and eggs",
+  "type": "expense"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | params are not valid or missing
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | entry not found
+
+###  DELETE v1/entries/:id
+
+🔑 Requires user to be logged in.
+
+Delete entry by id
+
+Input example
+```
+DELETE v1/entries/3
+```
+Success response (deleted entry)
+```
+{
+  "id": 3,
+  "user_id": "testusername111",
+  "category_id": 25,
+  "amount": 1800.6,
+  "date": "2023-07-01T00:00:00Z",
+  "description": "bread and eggs",
+  "type": "expense"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | entry id is not valid 
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | entry not found
 
 ## Test Data
 
