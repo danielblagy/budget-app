@@ -2,6 +2,7 @@ package budget_app
 
 import (
 	"errors"
+	"time"
 
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/danielblagy/budget-app/internal/service/entries"
@@ -30,6 +31,25 @@ func (h handler) UpdateEntry(c *fiber.Ctx) error {
 	}
 	if entryID <= 0 {
 		return c.Status(fiber.StatusBadRequest).SendString("entry id is not valid")
+	}
+
+	exists, _ := h.categoriesService.Exists(c.Context(), username, updateData.CategoryID)
+	if !exists {
+		return c.Status(fiber.StatusBadRequest).SendString("category not exists")
+	}
+
+	_, parseErr := time.Parse("2006-01-02", updateData.Date)
+	if parseErr != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("date format not valid")
+	}
+
+	if updateData.Amount <= 0 {
+		return c.Status(fiber.StatusBadRequest).SendString("amount less than or equal to zero")
+	}
+
+	entryType := model.EntryType(updateData.Type)
+	if _, ok := validEntryTypes[entryType]; !ok {
+		return c.Status(fiber.StatusBadRequest).SendString("entry type is not valid")
 	}
 
 	updatedEntry, err := h.entriesService.Update(c.Context(), username, int64(entryID), &updateData)
