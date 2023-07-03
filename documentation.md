@@ -2,6 +2,8 @@
 
 * [Introduction](#introduction)
 * [Access](#access)
+* [Users](#users)
+* [Categories](#categories)
 * [Entries](#v1entries)
 * [Test Data for Manual Testing](#test-data)
 
@@ -92,6 +94,157 @@ Errors
 | Bad Request         | 400  | invalid json, username may only contain letters, numbers, underscores, and dashes
 | Conflict      | 409  | username or email is taken
 | Forbidden | 403 | password is incorrect
+
+## v1/categories
+
+Budget categories. Used by users to analyze expenses and incomes. 
+
+### GET v1/categories/:type
+
+🔑 Requires user to be logged in.
+
+Get all user's categories of type. 
+
+Possible types
+```
+*/expense
+*/income
+```
+Success response
+```
+[
+  {
+    "id": 1,
+    "user_id": "testusername111",
+    "name": "day job",
+    "type": "income"
+  },
+  {
+    "id": 2,
+    "user_id": "testusername111",
+    "name": "vigilante",
+    "type": "income"
+  }
+]
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | category type is not valid
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | categories not found
+
+### GET v1/categories/by_id/:id
+
+🔑 Requires user to be logged in.
+
+Get user's category by category id.
+
+Input example
+```
+GET v1/categories/by_id/1
+```
+Success response
+```
+{
+  "id": 1,
+  "user_id": "testusername111",
+  "name": "day job",
+  "type": "income"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | category id is not valid
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | category not found
+
+### POST v1/categories
+
+🔑 Requires user to be logged in.
+
+Create category
+
+Body
+```
+{
+  "name": "some category name",
+  "type": "income"
+}
+```
+Success response
+```
+{
+  "id": 6,
+  "user_id": "testusername111",
+  "name": "some category name",
+  "type": "income"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | name or type is not valid or missing
+| Unauthorized      | 401  | token has expired or user not authorized
+| Inernal Server Error | 500 | detecting duplicate key value attempts or incorrect characters in json
+
+### PUT v1/categories
+
+🔑 Requires user to be logged in.
+
+Update category
+
+Body
+```
+{
+  "id": 3,
+  "name": "food",
+}
+```
+Success response(updated data)
+```
+{
+  "id": 3,
+  "user_id": "testusername111",
+  "name": "food",
+  "type": "expense"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | id or name is not valid or missing
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | category not found
+| Inernal Server Error | 500 | incorrect characters in json
+
+###  DELETE v1/categories/:id
+
+🔑 Requires user to be logged in.
+
+Delete category by id
+
+Input example
+```
+DELETE v1/categories/2
+```
+Success response (deleted category)
+```
+{
+  "id": 2,
+  "user_id": "testusername111",
+  "name": "vigilante",
+  "type": "income"
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | category id is not valid 
+| Unauthorized      | 401  | token has expired or user not authorized
+| Not Found | 404 | category not found
+
 
 ## v1/entries
 
