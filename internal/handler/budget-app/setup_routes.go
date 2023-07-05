@@ -28,4 +28,7 @@ func (h handler) SetupRoutes() {
 	entriesGroup := v1Group.Group("entries")
 	entriesGroup.Get("/:type", h.GetEntries)
 	entriesGroup.Get("by_id/:id", h.GetEntryByID)
+	entriesGroup.Post("/", h.CreateEntry)
+	entriesGroup.Delete("/:id", h.DeleteEntry)
+	entriesGroup.Put("/:id", h.UpdateEntry)
 }

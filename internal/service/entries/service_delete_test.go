@@ -8,13 +8,12 @@ import (
 	dbMocks "github.com/danielblagy/budget-app/internal/db/mocks"
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/jackc/pgx/v5"
-
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func Test_GetById(t *testing.T) {
+func Test_Delete(t *testing.T) {
 	t.Parallel()
 
 	username := "someusername123"
@@ -25,28 +24,28 @@ func Test_GetById(t *testing.T) {
 
 		entriesQuery := new(dbMocks.EntriesQuery)
 		entriesQuery.
-			On("GetByID", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
+			On("Delete", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
 			Return(nil, pgx.ErrNoRows)
 
 		service := NewService(entriesQuery)
-		_, err := service.GetByID(context.Background(), username, entryID)
+		_, err := service.Delete(context.Background(), username, entryID)
 		require.ErrorIs(t, err, ErrNotFound)
 	})
 
-	t.Run("error:can't get entry", func(t *testing.T) {
+	t.Run("error: can't delete entry", func(t *testing.T) {
 		t.Parallel()
 
 		expectedErr := errors.New("some error")
 
 		entriesQuery := new(dbMocks.EntriesQuery)
 		entriesQuery.
-			On("GetByID", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
+			On("Delete", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
 			Return(nil, expectedErr)
 
 		service := NewService(entriesQuery)
-		_, err := service.GetByID(context.Background(), username, entryID)
+		_, err := service.Delete(context.Background(), username, entryID)
 		require.ErrorIs(t, err, expectedErr)
-		require.ErrorContains(t, err, "can't get entry")
+		require.ErrorContains(t, err, "can't delete entry")
 	})
 
 	t.Run("success", func(t *testing.T) {
@@ -64,11 +63,11 @@ func Test_GetById(t *testing.T) {
 
 		entriesQuery := new(dbMocks.EntriesQuery)
 		entriesQuery.
-			On("GetByID", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
+			On("Delete", mock.AnythingOfType("*context.emptyCtx"), username, entryID).
 			Return(expectedEntry, nil)
 
 		service := NewService(entriesQuery)
-		entry, err := service.GetByID(context.Background(), username, entryID)
+		entry, err := service.Delete(context.Background(), username, entryID)
 		require.NoError(t, err)
 		require.Equal(t, expectedEntry, entry)
 	})

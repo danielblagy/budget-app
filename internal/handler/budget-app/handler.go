@@ -25,6 +25,9 @@ type Handler interface {
 	DeleteCategory(c *fiber.Ctx) error
 	GetEntryByID(c *fiber.Ctx) error
 	GetEntries(c *fiber.Ctx) error
+	CreateEntry(c *fiber.Ctx) error
+	DeleteEntry(c *fiber.Ctx) error
+	UpdateEntry(c *fiber.Ctx) error
 	LogIn(c *fiber.Ctx) error
 	LogOut(c *fiber.Ctx) error
 	Refresh(c *fiber.Ctx) error
