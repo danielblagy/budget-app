@@ -3,7 +3,7 @@ create type entry_type as enum ('income', 'expense');
 create table entries(
     id bigserial primary key,
     user_id varchar(128) not null,
-		category_id bigint not null,
+		category_id bigint,
 		amount double precision not null,
 		date timestamp not null,
 		description text not null,

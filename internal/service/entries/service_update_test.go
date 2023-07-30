@@ -73,7 +73,7 @@ func Test_Update(t *testing.T) {
 		expectedUpdatedEntry := &model.Entry{
 			ID:          entryID,
 			UserID:      username,
-			CategoryID:  entry.CategoryID,
+			CategoryID:  &entry.CategoryID,
 			Amount:      entry.Amount,
 			Date:        expectedDate,
 			Description: entry.Description,
