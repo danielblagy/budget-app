@@ -15,6 +15,58 @@ type EntriesQuery struct {
 	mock.Mock
 }
 
+// Add provides a mock function with given fields: ctx, username, entry
+func (_m *EntriesQuery) Add(ctx context.Context, username string, entry *model.CreateEntry) (*model.Entry, error) {
+	ret := _m.Called(ctx, username, entry)
+
+	var r0 *model.Entry
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, *model.CreateEntry) (*model.Entry, error)); ok {
+		return rf(ctx, username, entry)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string, *model.CreateEntry) *model.Entry); ok {
+		r0 = rf(ctx, username, entry)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Entry)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string, *model.CreateEntry) error); ok {
+		r1 = rf(ctx, username, entry)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Delete provides a mock function with given fields: ctx, username, entryID
+func (_m *EntriesQuery) Delete(ctx context.Context, username string, entryID int64) (*model.Entry, error) {
+	ret := _m.Called(ctx, username, entryID)
+
+	var r0 *model.Entry
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64) (*model.Entry, error)); ok {
+		return rf(ctx, username, entryID)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64) *model.Entry); ok {
+		r0 = rf(ctx, username, entryID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Entry)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string, int64) error); ok {
+		r1 = rf(ctx, username, entryID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetAll provides a mock function with given fields: ctx, username, entryType
 func (_m *EntriesQuery) GetAll(ctx context.Context, username string, entryType model.EntryType) ([]*model.Entry, error) {
 	ret := _m.Called(ctx, username, entryType)
@@ -60,6 +112,32 @@ func (_m *EntriesQuery) GetByID(ctx context.Context, username string, entryID in
 
 	if rf, ok := ret.Get(1).(func(context.Context, string, int64) error); ok {
 		r1 = rf(ctx, username, entryID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Update provides a mock function with given fields: ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType
+func (_m *EntriesQuery) Update(ctx context.Context, username string, entryID int64, newCategoryID int64, newAmount float64, newDate string, newDescription string, newType model.EntryType) (*model.Entry, error) {
+	ret := _m.Called(ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType)
+
+	var r0 *model.Entry
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64, int64, float64, string, string, model.EntryType) (*model.Entry, error)); ok {
+		return rf(ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64, int64, float64, string, string, model.EntryType) *model.Entry); ok {
+		r0 = rf(ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Entry)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string, int64, int64, float64, string, string, model.EntryType) error); ok {
+		r1 = rf(ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType)
 	} else {
 		r1 = ret.Error(1)
 	}

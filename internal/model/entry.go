@@ -1,8 +1,6 @@
 package model
 
-import (
-	"time"
-)
+import "time"
 
 type Entry struct {
 	ID          int64     `db:"id" json:"id"`

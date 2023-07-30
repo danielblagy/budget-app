@@ -16,6 +16,7 @@ type Service interface {
 	Create(ctx context.Context, username string, category *model.CreateCategory) (*model.Category, error)
 	Update(ctx context.Context, username string, updateData *model.UpdateCategory) (*model.Category, error)
 	Delete(ctx context.Context, username string, categoryID int64) (*model.Category, error)
+	Exists(ctx context.Context, username string, categoryID int64) (bool, error)
 }
 
 type service struct {
