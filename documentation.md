@@ -186,7 +186,6 @@ Errors
 | -------------     | ------------- | -             |
 | Bad Request         | 400  | name or type is not valid or missing
 | Unauthorized      | 401  | token has expired or user not authorized
-| Inernal Server Error | 500 | detecting duplicate key value attempts or incorrect characters in json
 
 ### PUT v1/categories
 
@@ -216,7 +215,6 @@ Errors
 | Bad Request         | 400  | id or name is not valid or missing
 | Unauthorized      | 401  | token has expired or user not authorized
 | Not Found | 404 | category not found
-| Inernal Server Error | 500 | incorrect characters in json
 
 ###  DELETE v1/categories/:id
 
