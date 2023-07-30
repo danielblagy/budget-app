@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/danielblagy/budget-app/internal/model"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 //go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=Service --case=underscore
@@ -21,10 +21,10 @@ type Service interface {
 }
 
 type service struct {
-	db *pgx.Conn
+	db *pgxpool.Pool
 }
 
-func NewService(db *pgx.Conn) Service {
+func NewService(db *pgxpool.Pool) Service {
 	return &service{
 		db: db,
 	}

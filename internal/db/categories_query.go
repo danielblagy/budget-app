@@ -6,7 +6,7 @@ import (
 
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/georgysavva/scany/v2/pgxscan"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pkg/errors"
 )
 
@@ -21,10 +21,10 @@ type CategoriesQuery interface {
 }
 
 type categoriesQuery struct {
-	db *pgx.Conn
+	db *pgxpool.Pool
 }
 
-func NewCategoriesQuery(db *pgx.Conn) CategoriesQuery {
+func NewCategoriesQuery(db *pgxpool.Pool) CategoriesQuery {
 	return &categoriesQuery{
 		db: db,
 	}
