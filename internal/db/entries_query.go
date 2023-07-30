@@ -6,7 +6,6 @@ import (
 
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/georgysavva/scany/v2/pgxscan"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pkg/errors"
 )
 
@@ -20,10 +19,10 @@ type EntriesQuery interface {
 	Delete(ctx context.Context, username string, entryID int64) (*model.Entry, error)
 }
 type entriesQuery struct {
-	db *pgxpool.Pool
+	db pgxscan.Querier
 }
 
-func NewEntriesQuery(db *pgxpool.Pool) EntriesQuery {
+func newEntriesQuery(db pgxscan.Querier) EntriesQuery {
 	return &entriesQuery{
 		db: db,
 	}

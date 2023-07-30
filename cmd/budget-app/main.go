@@ -84,8 +84,10 @@ func main() {
 
 	// db queries
 
-	categoriesQuery := db.NewCategoriesQuery(conn)
-	entriesQuery := db.NewEntriesQuery(conn)
+	queryFactory := db.NewQueryFactory()
+
+	categoriesQuery := queryFactory.NewCategoriesQuery(conn)
+	entriesQuery := queryFactory.NewEntriesQuery(conn)
 
 	// services
 
