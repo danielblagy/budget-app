@@ -15,7 +15,7 @@ type Service interface {
 	Get(ctx context.Context, username string, categoryID int64) (*model.Category, error)
 	Create(ctx context.Context, username string, category *model.CreateCategory) (*model.Category, error)
 	Update(ctx context.Context, username string, updateData *model.UpdateCategory) (*model.Category, error)
-	Delete(ctx context.Context, username string, categoryID int64) (*model.Category, error)
+	Delete(ctx context.Context, username string, categoryID int64, deleteEntries bool) (*model.Category, error)
 	Exists(ctx context.Context, username string, categoryID int64) (bool, error)
 }
 
@@ -23,12 +23,19 @@ type service struct {
 	logger          log.Logger
 	categoriesQuery db.CategoriesQuery
 	cacheService    cache.Service
+	queryFactory    db.QueryFactory
 }
 
-func NewService(logger log.Logger, categoriesQuery db.CategoriesQuery, cacheService cache.Service) Service {
+func NewService(
+	logger log.Logger,
+	categoriesQuery db.CategoriesQuery,
+	cacheService cache.Service,
+	queryFactory db.QueryFactory,
+) Service {
 	return &service{
 		logger:          logger,
 		categoriesQuery: categoriesQuery,
 		cacheService:    cacheService,
+		queryFactory:    queryFactory,
 	}
 }

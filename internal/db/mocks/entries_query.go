@@ -67,6 +67,20 @@ func (_m *EntriesQuery) Delete(ctx context.Context, username string, entryID int
 	return r0, r1
 }
 
+// DeleteByUserAndCategory provides a mock function with given fields: ctx, username, categoryID
+func (_m *EntriesQuery) DeleteByUserAndCategory(ctx context.Context, username string, categoryID int64) error {
+	ret := _m.Called(ctx, username, categoryID)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64) error); ok {
+		r0 = rf(ctx, username, categoryID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // GetAll provides a mock function with given fields: ctx, username, entryType
 func (_m *EntriesQuery) GetAll(ctx context.Context, username string, entryType model.EntryType) ([]*model.Entry, error) {
 	ret := _m.Called(ctx, username, entryType)
@@ -117,6 +131,20 @@ func (_m *EntriesQuery) GetByID(ctx context.Context, username string, entryID in
 	}
 
 	return r0, r1
+}
+
+// SetNullCategory provides a mock function with given fields: ctx, username, categoryID
+func (_m *EntriesQuery) SetNullCategory(ctx context.Context, username string, categoryID int64) error {
+	ret := _m.Called(ctx, username, categoryID)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, int64) error); ok {
+		r0 = rf(ctx, username, categoryID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // Update provides a mock function with given fields: ctx, username, entryID, newCategoryID, newAmount, newDate, newDescription, newType

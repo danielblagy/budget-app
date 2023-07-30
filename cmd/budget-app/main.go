@@ -84,7 +84,7 @@ func main() {
 
 	// db queries
 
-	queryFactory := db.NewQueryFactory()
+	queryFactory := db.NewQueryFactory(conn)
 
 	categoriesQuery := queryFactory.NewCategoriesQuery(conn)
 	entriesQuery := queryFactory.NewEntriesQuery(conn)
@@ -95,7 +95,7 @@ func main() {
 	persistentStoreService := persistent_store.NewService(redisPersistentStoreClient)
 	usersService := users.NewService(conn)
 	accessService := access.NewService(usersService, persistentStoreService)
-	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService)
+	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService, queryFactory)
 	entriesService := entries.NewService(entriesQuery)
 
 	// fiber app

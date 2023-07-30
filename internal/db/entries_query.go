@@ -17,6 +17,8 @@ type EntriesQuery interface {
 	Add(ctx context.Context, username string, entry *model.CreateEntry) (*model.Entry, error)
 	Update(ctx context.Context, username string, entryID int64, newCategoryID int64, newAmount float64, newDate string, newDescription string, newType model.EntryType) (*model.Entry, error)
 	Delete(ctx context.Context, username string, entryID int64) (*model.Entry, error)
+	DeleteByUserAndCategory(ctx context.Context, username string, categoryID int64) error
+	SetNullCategory(ctx context.Context, username string, categoryID int64) error
 }
 type entriesQuery struct {
 	db pgxscan.Querier
@@ -93,4 +95,36 @@ func (q entriesQuery) Delete(ctx context.Context, username string, entryID int64
 	}
 
 	return &deletedEntry, nil
+}
+
+func (q entriesQuery) DeleteByUserAndCategory(ctx context.Context, username string, categoryID int64) error {
+	var deleteQueryTemplate = "delete from entries where user_id = '%s' and category_id = '%d'"
+
+	rows, err := q.db.Query(ctx, fmt.Sprintf(deleteQueryTemplate, username, categoryID))
+	if err != nil {
+		return err
+	}
+
+	// TODO for some reason using Query and not reading returned pgx.Rows object
+	// makes connection busy when using pgx.Tx, so forse-close is needed.
+	// perhaps there's a better way to go about it
+	rows.Close()
+
+	return nil
+}
+
+func (q entriesQuery) SetNullCategory(ctx context.Context, username string, categoryID int64) error {
+	var queryTemplate = "update entries set category_id = null where user_id = '%s' and category_id = '%d'"
+
+	rows, err := q.db.Query(ctx, fmt.Sprintf(queryTemplate, username, categoryID))
+	if err != nil {
+		return err
+	}
+
+	// TODO for some reason using Query and not reading returned pgx.Rows object
+	// makes connection busy when using pgx.Tx, so forse-close is needed.
+	// perhaps there's a better way to go about it
+	rows.Close()
+
+	return nil
 }

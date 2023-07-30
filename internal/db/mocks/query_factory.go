@@ -14,6 +14,22 @@ type QueryFactory struct {
 	mock.Mock
 }
 
+// GetDbRunner provides a mock function with given fields:
+func (_m *QueryFactory) GetDbRunner() db.DbRunner {
+	ret := _m.Called()
+
+	var r0 db.DbRunner
+	if rf, ok := ret.Get(0).(func() db.DbRunner); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(db.DbRunner)
+		}
+	}
+
+	return r0
+}
+
 // NewCategoriesQuery provides a mock function with given fields: _a0
 func (_m *QueryFactory) NewCategoriesQuery(_a0 pgxscan.Querier) db.CategoriesQuery {
 	ret := _m.Called(_a0)
