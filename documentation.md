@@ -12,8 +12,8 @@ This documentation provides a description of all available API handlers.
 
 To use most of the API handlers you need to be logged in using /access/login, see [/access](#access) section for more information.
 
-1. To create a user, use [POST /users](#post-users).
-2. Then log in with created user's credentials via [POST /access/login](#post-accesslogin).
+1. To create a user, use [POST /users](#post-v1users).
+2. Then log in with created user's credentials via [POST /access/login](#post-v1accesslogin).
 3. You are in!
 
 Test user with test data is automatically created on migrate-up, check out [test data section](#test-data) for more information.

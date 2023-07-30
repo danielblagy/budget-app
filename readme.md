@@ -46,10 +46,6 @@ docker, docker-compose
 ### sql migrations
 [go-migrate](https://github.com/golang-migrate/migrate) cli tool
 
-### golang packages
-
-TODO
-
 ## Make Commands
 
 Start Docker containers
