@@ -17,7 +17,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	fiberLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	log "github.com/inconshreveable/log15"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
 )
@@ -43,12 +43,12 @@ func main() {
 	ctx := context.Background()
 
 	// connect to postgres database
-	conn, err := pgx.Connect(ctx, os.Getenv(envDatabaseUrl))
+	conn, err := pgxpool.New(ctx, os.Getenv(envDatabaseUrl))
 	if err != nil {
 		logger.Crit("can't connect to database", "err", err.Error())
 		os.Exit(1)
 	}
-	defer conn.Close(ctx)
+	defer conn.Close()
 
 	// connect to redis cache server
 
