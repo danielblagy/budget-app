@@ -1,9 +1,9 @@
 # budget-app REST API Documentation
 
 * [Introduction](#introduction)
-* [Access](#access)
-* [Users](#users)
-* [Categories](#categories)
+* [Access](#v1access)
+* [Users](#v1users)
+* [Categories](#v1categories)
 * [Entries](#v1entries)
 * [Test Data for Manual Testing](#test-data)
 
@@ -13,8 +13,8 @@ This documentation provides a description of all available API handlers.
 
 To use most of the API handlers you need to be logged in using /access/login, see [/access](#access) section for more information.
 
-1. To create a user, use [POST /users](#post-users).
-2. Then log in with created user's credentials via [POST /access/login](#post-accesslogin).
+1. To create a user, use [POST /users](#post-v1users).
+2. Then log in with created user's credentials via [POST /access/login](#post-v1accesslogin).
 3. You are in!
 
 Test user with test data is automatically created on migrate-up, check out [test data section](#test-data) for more information.
@@ -187,7 +187,6 @@ Errors
 | -------------     | ------------- | -             |
 | Bad Request         | 400  | name or type is not valid or missing
 | Unauthorized      | 401  | token has expired or user not authorized
-| Inernal Server Error | 500 | detecting duplicate key value attempts or incorrect characters in json
 
 ### PUT v1/categories
 
@@ -217,7 +216,6 @@ Errors
 | Bad Request         | 400  | id or name is not valid or missing
 | Unauthorized      | 401  | token has expired or user not authorized
 | Not Found | 404 | category not found
-| Inernal Server Error | 500 | incorrect characters in json
 
 ###  DELETE v1/categories/:id
 

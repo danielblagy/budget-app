@@ -5,6 +5,7 @@
 * [Documentation](#documentation)
 * [Dependencies](#dependencies)
 * [Make Commands](#make-commands)
+* [Web Client App](#web-client-app)
 
 ## Introduction 
 
@@ -45,10 +46,6 @@ docker, docker-compose
 ### sql migrations
 [go-migrate](https://github.com/golang-migrate/migrate) cli tool
 
-### golang packages
-
-TODO
-
 ## Make Commands
 
 Start Docker containers
@@ -85,3 +82,19 @@ Run tests
 ```
 make test
 ```
+
+Run linter
+```
+make lint
+```
+
+Build project (builds to directory /build)
+```
+make build
+```
+
+## Web Client App
+
+A web client application is currently being developed that uses this REST API to serve UI.
+
+Check out the repository [here](https://github.com/danielblagy/budget-app-web-client).
