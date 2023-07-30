@@ -83,6 +83,16 @@ Run tests
 make test
 ```
 
+Run linter
+```
+make lint
+```
+
+Build project (builds to directory /build)
+```
+make build
+```
+
 ## Web Client App
 
 A web client application is currently being developed that uses this REST API to serve UI.
