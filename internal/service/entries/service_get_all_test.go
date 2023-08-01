@@ -37,11 +37,14 @@ func Test_GetAll(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
+		categoryID1 := int64(20)
+		categoryID2 := int64(22)
+
 		expectedEntry := []*model.Entry{
 			{
 				ID:          int64(1),
 				UserID:      username,
-				CategoryID:  int64(20),
+				CategoryID:  &categoryID1,
 				Amount:      float64(1000.0),
 				Date:        time.Now(),
 				Description: "eggs,milk,salt and pepper",
@@ -50,7 +53,7 @@ func Test_GetAll(t *testing.T) {
 			{
 				ID:          int64(2),
 				UserID:      username,
-				CategoryID:  int64(22),
+				CategoryID:  &categoryID2,
 				Amount:      float64(150.0),
 				Date:        time.Now(),
 				Description: "ice cream",

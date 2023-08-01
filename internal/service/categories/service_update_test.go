@@ -31,7 +31,7 @@ func Test_Update(t *testing.T) {
 			On("Update", mock.AnythingOfType("*context.emptyCtx"), username, category.ID, category.Name).
 			Return(nil, pgx.ErrNoRows)
 
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		_, err := service.Update(context.Background(), username, category)
 		require.ErrorIs(t, err, ErrNotFound)
 	})
@@ -46,7 +46,7 @@ func Test_Update(t *testing.T) {
 			On("Update", mock.AnythingOfType("*context.emptyCtx"), username, category.ID, category.Name).
 			Return(nil, expectedErr)
 
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		_, err := service.Update(context.Background(), username, category)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't update category")
@@ -74,7 +74,7 @@ func Test_Update(t *testing.T) {
 			On("Set", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("%s:category:%d", username, category.ID), expectedUpdatedCategory).
 			Return(expectedErr)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		_, err := service.Update(context.Background(), username, category)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't update category cache")
@@ -100,7 +100,7 @@ func Test_Update(t *testing.T) {
 			On("Set", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("%s:category:%d", username, category.ID), expectedUpdatedCategory).
 			Return(nil)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		updatedCategory, err := service.Update(context.Background(), username, category)
 		require.NoError(t, err)
 		require.Equal(t, expectedUpdatedCategory, updatedCategory)

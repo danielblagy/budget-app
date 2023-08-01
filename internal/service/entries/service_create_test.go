@@ -43,10 +43,12 @@ func Test_Create(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
+		categoryID := int64(20)
+
 		expectedCreatedEntry := &model.Entry{
 			ID:          int64(1),
 			UserID:      username,
-			CategoryID:  int64(20),
+			CategoryID:  &categoryID,
 			Amount:      float64(1000.0),
 			Date:        time.Now(),
 			Description: "eggs,milk,salt and pepper",

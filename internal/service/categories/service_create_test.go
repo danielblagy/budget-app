@@ -33,7 +33,7 @@ func Test_Create(t *testing.T) {
 			On("Add", mock.AnythingOfType("*context.emptyCtx"), username, category).
 			Return(nil, expectedErr)
 
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		_, err := service.Create(context.Background(), username, category)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't create category")
@@ -64,7 +64,7 @@ func Test_Create(t *testing.T) {
 		logger := new(mocks.Logger)
 		logger.On("Error", "can't add to created category to cache", "err", "some error").Once()
 
-		service := NewService(logger, categoriesQuery, cacheService)
+		service := NewService(logger, categoriesQuery, cacheService, nil)
 		createdCategory, err := service.Create(context.Background(), username, category)
 		require.NoError(t, err)
 		require.Equal(t, expectedCreatedCategory, createdCategory)
@@ -91,7 +91,7 @@ func Test_Create(t *testing.T) {
 			On("Set", mock.AnythingOfType("*context.emptyCtx"), fmt.Sprintf("%s:category:10", username), expectedCreatedCategory).
 			Return(nil)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		createdCategory, err := service.Create(context.Background(), username, category)
 
 		cacheService.AssertExpectations(t)

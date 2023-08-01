@@ -32,7 +32,7 @@ func Test_Get(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), cacheKey).
 			Return(nil, false, expectedErr)
 
-		service := NewService(nil, nil, cacheService)
+		service := NewService(nil, nil, cacheService, nil)
 		_, err := service.Get(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't get category from cache")
@@ -73,7 +73,7 @@ func Test_Get(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), cacheKey).
 			Return(cacheValueBytes, true, nil)
 
-		service := NewService(nil, nil, cacheService)
+		service := NewService(nil, nil, cacheService, nil)
 		err := json.Unmarshal(cacheValueBytes, expectedCategory)
 		category, _ := service.Get(context.Background(), username, categoryID)
 		require.NoError(t, err)
@@ -93,7 +93,7 @@ func Test_Get(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(nil, pgx.ErrNoRows)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		_, err := service.Get(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, ErrNotFound)
 	})
@@ -114,7 +114,7 @@ func Test_Get(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(nil, expectedErr)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		_, err := service.Get(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't get category")
@@ -147,7 +147,7 @@ func Test_Get(t *testing.T) {
 			On("Set", mock.AnythingOfType("*context.emptyCtx"), cacheKey, expectedCategory).
 			Return(expectedErr)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		_, err := service.Get(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't set category cache")
@@ -178,7 +178,7 @@ func Test_Get(t *testing.T) {
 			On("Set", mock.AnythingOfType("*context.emptyCtx"), cacheKey, expectedCategory).
 			Return(nil)
 
-		service := NewService(nil, categoriesQuery, cacheService)
+		service := NewService(nil, categoriesQuery, cacheService, nil)
 		category, err := service.Get(context.Background(), username, categoryID)
 		require.NoError(t, err)
 		require.Equal(t, expectedCategory, category)

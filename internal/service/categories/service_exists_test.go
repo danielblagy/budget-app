@@ -28,7 +28,7 @@ func Test_Exists(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(nil, expectedErr)
 
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		_, err := service.Exists(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, expectedErr)
 		require.ErrorContains(t, err, "can't check if category exists")
@@ -41,7 +41,7 @@ func Test_Exists(t *testing.T) {
 			On("Get", mock.AnythingOfType("*context.emptyCtx"), username, categoryID).
 			Return(nil, pgx.ErrNoRows)
 
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		_, err := service.Exists(context.Background(), username, categoryID)
 		require.ErrorIs(t, err, nil)
 	})
@@ -61,7 +61,7 @@ func Test_Exists(t *testing.T) {
 			Return(expectedCategory, nil)
 
 		var exists bool = true
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		isExist, err := service.Exists(context.Background(), username, categoryID)
 		require.NoError(t, err)
 		require.Equal(t, exists, isExist)
@@ -75,7 +75,7 @@ func Test_Exists(t *testing.T) {
 			Return(nil, pgx.ErrNoRows)
 
 		var exists bool = false
-		service := NewService(nil, categoriesQuery, nil)
+		service := NewService(nil, categoriesQuery, nil, nil)
 		isExist, err := service.Exists(context.Background(), username, categoryID)
 		require.NoError(t, err)
 		require.Equal(t, exists, isExist)
