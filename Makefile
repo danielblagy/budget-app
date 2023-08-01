@@ -35,3 +35,13 @@ build:
 .PHONY: lint
 lint:
 	staticcheck ./...
+
+.PHONY: setup-e2e-env
+setup-e2e-env:
+	make docker-down docker-up
+	sleep 3
+	make migrate-up
+
+.PHONY: run-e2e-tests
+run-e2e-tests:
+	go test ./e2e -tags e2e
