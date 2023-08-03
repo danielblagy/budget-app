@@ -42,3 +42,26 @@ jobs:
     
     - name: go build
       run: make build
+  
+  setup-e2e-env:
+    needs: build
+    
+    runs-on: ubuntu-20.04
+    steps:
+
+    - name: checkout repository
+      uses: actions/checkout@v3
+      
+    - name: set up docker-compose
+      uses: KengoTODA/actions-setup-docker-compose@v1
+      with:
+        version: '2.14.2'
+    
+    - name: set up e2e testing environment
+      run: make setup-e2e-env
+    
+    - name: run server
+      run: make run &
+    
+    - name: run e2e tests
+      run: make run-e2e-tests
