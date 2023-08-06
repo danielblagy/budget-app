@@ -23,7 +23,7 @@ func SetupUser(ctx context.Context, t *testing.T, client *http.Client) string {
 	email := fmt.Sprintf("%s%s", timestampStr[len(timestampStr)-4:], "@e2email.com")
 	password := timestampStr
 
-	status, body := Post(ctx, t, client, "http://localhost:5000/v1/users", model.User{
+	status, body := Post(ctx, t, client, "http://localhost:5123/v1/users", model.User{
 		Username: username,
 		Email:    email,
 		FullName: "Test User",
@@ -39,7 +39,7 @@ func SetupUser(ctx context.Context, t *testing.T, client *http.Client) string {
 	require.Equal(t, email, user.Email)
 	require.Equal(t, "Test User", user.FullName)
 
-	status, body = Post(ctx, t, client, "http://localhost:5000/v1/access/login", model.Login{
+	status, body = Post(ctx, t, client, "http://localhost:5123/v1/access/login", model.Login{
 		Username: username,
 		Password: password,
 	})

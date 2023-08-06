@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/danielblagy/budget-app/e2e/common"
 	"github.com/danielblagy/budget-app/e2e/util"
 	"github.com/danielblagy/budget-app/internal/model"
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +19,7 @@ func RunEntryCreate(ctx context.Context, t *testing.T) {
 	client := util.SetupHttpClient()
 
 	username := util.SetupUser(ctx, t, client)
-	ctx = context.WithValue(ctx, "username", username)
+	ctx = context.WithValue(ctx, common.CtxKeyUsername, username)
 	testInvalidRequest(ctx, t, client)
 	testSuccessCreation(ctx, t, client)
 }
@@ -33,7 +34,7 @@ func testInvalidRequest(ctx context.Context, t *testing.T, client *http.Client) 
 
 	// negative: cannot create entry because category doesn not exist
 	t.Logf("category not exists")
-	status, body := util.Post(ctx, t, client, "http://localhost:5000/v1/entries", model.CreateEntry{
+	status, body := util.Post(ctx, t, client, "http://localhost:5123/v1/entries", model.CreateEntry{
 		CategoryID:  -1,
 		Amount:      amount,
 		Date:        date,
@@ -45,7 +46,7 @@ func testInvalidRequest(ctx context.Context, t *testing.T, client *http.Client) 
 
 	// negative: cannot create entry because date is in invalid format
 	t.Logf("date format not valid")
-	status, body = util.Post(ctx, t, client, "http://localhost:5000/v1/entries", model.CreateEntry{
+	status, body = util.Post(ctx, t, client, "http://localhost:5123/v1/entries", model.CreateEntry{
 		CategoryID:  categoryID,
 		Amount:      amount,
 		Date:        "123-56-457",
@@ -57,7 +58,7 @@ func testInvalidRequest(ctx context.Context, t *testing.T, client *http.Client) 
 
 	// negative: cannot create entry because amount is not valid
 	t.Logf("amount less than or equal to zero")
-	status, body = util.Post(ctx, t, client, "http://localhost:5000/v1/entries", model.CreateEntry{
+	status, body = util.Post(ctx, t, client, "http://localhost:5123/v1/entries", model.CreateEntry{
 		CategoryID:  categoryID,
 		Amount:      0.0,
 		Date:        date,
@@ -69,7 +70,7 @@ func testInvalidRequest(ctx context.Context, t *testing.T, client *http.Client) 
 
 	// negative: cannot create entry because entry type is neither 'income' nor 'expense'
 	t.Logf("entry type is not valid")
-	status, body = util.Post(ctx, t, client, "http://localhost:5000/v1/entries", model.CreateEntry{
+	status, body = util.Post(ctx, t, client, "http://localhost:5123/v1/entries", model.CreateEntry{
 		CategoryID:  categoryID,
 		Amount:      amount,
 		Date:        date,
@@ -93,12 +94,11 @@ func testSuccessCreation(ctx context.Context, t *testing.T, client *http.Client)
 
 	// positive: create an expense entry with description
 	t.Logf("positive: create an expense entry with description")
-	status, body := util.Post(ctx, t, client, "http://localhost:5000/v1/entries", createEntry1Body)
+	status, body := util.Post(ctx, t, client, "http://localhost:5123/v1/entries", createEntry1Body)
 	require.Equal(t, fiber.StatusOK, status)
 	require.NotEmpty(t, body)
 
-	username, ok := ctx.Value("username").(string)
-	require.True(t, ok)
+	username := util.FromCtx(ctx, t, common.CtxKeyUsername)
 
 	var entry1 model.Entry
 	err := json.Unmarshal(body, &entry1)
@@ -125,7 +125,7 @@ func testSuccessCreation(ctx context.Context, t *testing.T, client *http.Client)
 
 	// positive: create an income entry without description
 	t.Logf("positive: create an expense entry without description")
-	status, body = util.Post(ctx, t, client, "http://localhost:5000/v1/entries", createEntry2Body)
+	status, body = util.Post(ctx, t, client, "http://localhost:5123/v1/entries", createEntry2Body)
 	require.Equal(t, fiber.StatusOK, status)
 	require.NotEmpty(t, body)
 

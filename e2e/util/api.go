@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 
@@ -19,7 +19,7 @@ func Get(ctx context.Context, t *testing.T, client *http.Client, url string) (in
 	require.NoError(t, err)
 	defer response.Body.Close()
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	require.NoError(t, err)
 
 	return response.StatusCode, body
@@ -35,7 +35,7 @@ func Post(ctx context.Context, t *testing.T, client *http.Client, url string, re
 	response, err := client.Post(url, "application/json", bytes.NewBuffer(requestBodyBytes))
 	require.NoError(t, err)
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	require.NoError(t, err)
 
 	return response.StatusCode, body
