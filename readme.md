@@ -47,6 +47,16 @@ docker, docker-compose
 ### sql migrations
 [go-migrate](https://github.com/golang-migrate/migrate) cli tool
 
+### database
+
+PostgreSQL
+
+### fast-access persistent storage
+
+Redis
+
+Redis is used as a fast-access persistent storage for handling invalid JWT tokens.
+
 ## Make Commands
 
 Start Docker containers
