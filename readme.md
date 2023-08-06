@@ -6,6 +6,7 @@
 * [Dependencies](#dependencies)
 * [Make Commands](#make-commands)
 * [Web Client App](#web-client-app)
+* [E2E Tests](#e2e-tests)
 
 ## Introduction 
 
@@ -36,7 +37,7 @@ make run
 
 ## Documentation
 
-Access full documentation on REST API is [here](documentation.md).
+Access full documentation on REST API [here](documentation.md).
 
 ## Dependencies
 
@@ -45,6 +46,16 @@ docker, docker-compose
 
 ### sql migrations
 [go-migrate](https://github.com/golang-migrate/migrate) cli tool
+
+### database
+
+PostgreSQL
+
+### fast-access persistent storage
+
+Redis
+
+Redis is used as a fast-access persistent storage for handling invalid JWT tokens.
 
 ## Make Commands
 
@@ -98,3 +109,14 @@ make build
 A web client application is currently being developed that uses this REST API to serve UI.
 
 Check out the repository [here](https://github.com/danielblagy/budget-app-web-client).
+
+## E2E Tests
+
+E2E Tests are run on each pull request into master via Github Actions.
+
+To run e2e tests locally:
+1. `make setup-e2e-env` to set up the testing environment (this simply shuts down and removes running containers if they exist, starts docker containers, runs postgresql migrations)
+2. `make run` to starts the REST server (for convenience, use a separate terminal window for this)
+3. `make run-e2e-tests` to run e2e tests
+
+E2E testing is done using go test. Unit tests and e2e tests are separated and will not run simultaneously.
