@@ -4,17 +4,16 @@
 package e2e
 
 import (
+	"context"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/stretchr/testify/require"
+	"github.com/danielblagy/budget-app/e2e/entry"
 )
 
-func E2e_Hello(t *testing.T) {
+func Test_Main(t *testing.T) {
 	t.Parallel()
 
-	status, body, errs := fiber.Get("localhost:5000/v1/entries/expense").Bytes()
-	require.Equal(t, fiber.StatusUnauthorized, status)
-	require.NotNil(t, body)
-	require.Empty(t, errs)
+	ctx := context.Background()
+
+	entry.RunEntryCreate(ctx, t)
 }

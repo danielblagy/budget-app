@@ -27,6 +27,7 @@ const envCacheAddress = "CACHE_ADDRESS"
 const envCachePassword = "CACHE_PASSWORD"
 const envPersistentStoreAddress = "PERSISTENT_STORE_ADDRESS"
 const envPersistentStorePassword = "PERSISTENT_STORE_PASSWORD"
+const envServerPort = "SERVER_PORT"
 
 func main() {
 	// logger
@@ -110,7 +111,7 @@ func main() {
 
 	// start the app
 
-	if startAppErr := app.Listen(":5000"); startAppErr != nil {
+	if startAppErr := app.Listen(fmt.Sprintf(":%s", os.Getenv(envServerPort))); startAppErr != nil {
 		logger.Crit("can't start fiber app", "err", startAppErr.Error())
 	}
 }
