@@ -19,6 +19,8 @@ func (h handler) CreateEntry(c *fiber.Ctx) error {
 		return errors.Wrap(err, "can't parse body")
 	}
 
+	h.logger.Debug("create entry", "username", username, "entry", entry)
+
 	exists, _ := h.categoriesService.Exists(c.Context(), username, entry.CategoryID)
 	if !exists {
 		return c.Status(fiber.StatusBadRequest).SendString("category not exists")

@@ -12,6 +12,7 @@ func (h handler) GetUser(c *fiber.Ctx) error {
 	if len(username) == 0 {
 		return c.Status(fiber.StatusBadRequest).SendString("username must not be empty")
 	}
+	h.logger.Debug("get user", "username", username)
 	if !containsOnlyValidCharacters(username) {
 		return c.Status(fiber.StatusBadRequest).SendString("username may only contain letters, numbers, underscores, and dashes")
 	}

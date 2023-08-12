@@ -17,6 +17,7 @@ func (h handler) GetEntryByID(c *fiber.Ctx) error {
 	if err != nil {
 		return err //return err in case invalid types of data for entryID
 	}
+	h.logger.Debug("get entry", "username", username, "entry_id", entryID)
 	if entryID <= 0 {
 		return c.Status(fiber.StatusBadRequest).SendString("entry id is not valid")
 	}
