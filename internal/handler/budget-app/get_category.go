@@ -17,6 +17,7 @@ func (h handler) GetCategory(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+	h.logger.Debug("get category", "username", username, "category_id", categoryID)
 	if categoryID <= 0 {
 		return c.Status(fiber.StatusBadRequest).SendString("category id is not valid")
 	}

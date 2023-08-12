@@ -17,6 +17,7 @@ func (h handler) GetEntries(c *fiber.Ctx) error {
 	}
 
 	entryTypeRaw := c.Params("type")
+	h.logger.Debug("get entries", "username", username, "type", entryTypeRaw)
 
 	entryType := model.EntryType(entryTypeRaw)
 	if _, ok := validEntryTypes[entryType]; !ok {

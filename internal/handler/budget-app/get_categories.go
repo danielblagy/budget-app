@@ -17,6 +17,7 @@ func (h handler) GetCategories(c *fiber.Ctx) error {
 	}
 
 	categoryTypeRaw := c.Params("type")
+	h.logger.Debug("get categories", "username", username, "type", categoryTypeRaw)
 
 	categoryType := model.CategoryType(categoryTypeRaw)
 	if _, ok := validCategoryTypes[categoryType]; !ok {

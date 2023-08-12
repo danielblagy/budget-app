@@ -16,6 +16,8 @@ func (h handler) CreateUser(c *fiber.Ctx) error {
 		return err
 	}
 
+	h.logger.Debug("create user", "user", user)
+
 	if err := h.createUserValidateBody(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}

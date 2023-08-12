@@ -12,6 +12,7 @@ func (h handler) LogOut(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(statusCode).SendString(err.Error())
 	}
+	h.logger.Debug("logout", "username", username)
 
 	err = h.accessService.LogOut(c.Context(), c.Cookies(accessTokenCookieName), c.Cookies(refreshTokenCookieName))
 	if err != nil {

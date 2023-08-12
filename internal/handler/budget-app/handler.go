@@ -7,6 +7,7 @@ import (
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/inconshreveable/log15"
 )
 
 type Handler interface {
@@ -34,6 +35,7 @@ type Handler interface {
 }
 
 type handler struct {
+	logger   log15.Logger
 	validate *validator.Validate
 	app      *fiber.App
 
@@ -43,8 +45,17 @@ type handler struct {
 	entriesService    entries.Service
 }
 
-func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service, categoriesService categories.Service, entriesService entries.Service) Handler {
+func NewHandler(
+	logger log15.Logger,
+	validate *validator.Validate,
+	app *fiber.App,
+	usersService users.Service,
+	accessService access.Service,
+	categoriesService categories.Service,
+	entriesService entries.Service,
+) Handler {
 	return &handler{
+		logger:            logger,
 		validate:          validate,
 		app:               app,
 		usersService:      usersService,

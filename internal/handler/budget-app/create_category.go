@@ -17,6 +17,8 @@ func (h handler) CreateCategory(c *fiber.Ctx) error {
 		return err
 	}
 
+	h.logger.Debug("create category", "username", username, "category", category)
+
 	if err := h.validate.Struct(category); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}

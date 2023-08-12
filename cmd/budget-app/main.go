@@ -106,7 +106,15 @@ func main() {
 
 	// handlers
 
-	budgetAppHandler := budget_app.NewHandler(validate, app, usersService, accessService, categoriesService, entriesService)
+	budgetAppHandler := budget_app.NewHandler(
+		logger.New("handler", "budget-app"),
+		validate,
+		app,
+		usersService,
+		accessService,
+		categoriesService,
+		entriesService,
+	)
 	budgetAppHandler.SetupRoutes()
 
 	// start the app

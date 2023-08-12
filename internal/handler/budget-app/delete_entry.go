@@ -17,6 +17,7 @@ func (h handler) DeleteEntry(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+	h.logger.Debug("create entry", "username", username, "entry_id", entryID)
 	if entryID <= 0 {
 		return c.Status(fiber.StatusBadRequest).SendString("entry id is not valid")
 	}

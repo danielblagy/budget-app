@@ -9,6 +9,7 @@ func (h handler) Me(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(statusCode).SendString(err.Error())
 	}
+	h.logger.Debug("me", "username", username)
 
 	user, err := h.usersService.Get(c.Context(), username)
 	if err != nil {

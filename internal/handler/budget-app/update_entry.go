@@ -19,6 +19,7 @@ func (h handler) UpdateEntry(c *fiber.Ctx) error {
 	if err := c.BodyParser(&updateData); err != nil {
 		return err
 	}
+	h.logger.Debug("update entry", "username", username, "entry", updateData)
 
 	if err := h.validate.Struct(updateData); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
