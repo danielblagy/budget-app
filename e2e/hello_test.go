@@ -16,4 +16,5 @@ func Test_Main(t *testing.T) {
 	ctx := context.Background()
 
 	entry.RunEntryCreate(ctx, t)
+	entry.RunEntryDelete(ctx, ctx, t)
 }

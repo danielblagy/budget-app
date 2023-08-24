@@ -40,3 +40,20 @@ func Post(ctx context.Context, t *testing.T, client *http.Client, url string, re
 
 	return response.StatusCode, body
 }
+
+// Delete makes HTTP GET request and returns status code and response body in bytes
+func Delete(ctx context.Context, t *testing.T, client *http.Client, url string) (int, []byte) {
+	t.Logf("DELETE %s", url)
+
+	req, err := http.NewRequest("DELETE", url, nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+
+	return resp.StatusCode, body
+}
