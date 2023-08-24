@@ -17,10 +17,10 @@ import (
 
 func RunEntryDelete(ctx1 context.Context, ctx2 context.Context, t *testing.T) {
 	client1 := util.SetupHttpClient()
-	client2 := util.SetupHttpClient()
 	username1 := util.SetupUser(ctx1, t, client1)
-	username2 := util.SetupUser(ctx2, t, client2)
 	ctx1 = context.WithValue(ctx1, common.CtxKeyUsername, username1)
+	client2 := util.SetupHttpClient()
+	username2 := util.SetupUser(ctx2, t, client2)
 	ctx2 = context.WithValue(ctx2, common.CtxKeyUsername, username2)
 	testInvalidDeleteRequest(ctx1, ctx2, t, client1, client2)
 	testSuccessDeleting(ctx1, t, client1)
