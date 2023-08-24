@@ -18,14 +18,15 @@ import (
 func SetupUser(ctx context.Context, t *testing.T, client *http.Client) string {
 	t.Logf("setting up user")
 
-	timestampStr := strconv.FormatInt(time.Now().Unix(), 10)
-	t.Logf("setting up username")
+	timestampStr := strconv.FormatInt(time.Now().UnixNano(), 10)
 
 	username := fmt.Sprintf("%s%s", "e2euser", timestampStr[len(timestampStr)-4:])
-	t.Logf("setting up email")
-
+	t.Logf("set username %s", username)
 	email := fmt.Sprintf("%s%s", timestampStr[len(timestampStr)-4:], "@e2email.com")
+	t.Logf("set up email %s", email)
 	password := timestampStr
+	t.Logf("set up password %s", password)
+
 	t.Logf("creating new user")
 	status, body := Post(ctx, t, client, "http://localhost:5123/v1/users", model.User{
 		Username: username,
