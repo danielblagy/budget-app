@@ -11,6 +11,7 @@ type QueryFactory interface {
 	GetDbRunner() DbRunner
 	NewCategoriesQuery(db pgxscan.Querier) CategoriesQuery
 	NewEntriesQuery(db pgxscan.Querier) EntriesQuery
+	NewReportsQuery(db pgxscan.Querier) ReportsQuery
 }
 
 type queryFactory struct {
@@ -33,4 +34,8 @@ func (f *queryFactory) NewCategoriesQuery(db pgxscan.Querier) CategoriesQuery {
 
 func (f *queryFactory) NewEntriesQuery(db pgxscan.Querier) EntriesQuery {
 	return newEntriesQuery(db)
+}
+
+func (f *queryFactory) NewReportsQuery(db pgxscan.Querier) ReportsQuery {
+	return newReportsQuery(db)
 }

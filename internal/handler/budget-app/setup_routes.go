@@ -31,4 +31,7 @@ func (h handler) SetupRoutes() {
 	entriesGroup.Post("/", h.CreateEntry)
 	entriesGroup.Delete("/:id", h.DeleteEntry)
 	entriesGroup.Put("/:id", h.UpdateEntry)
+
+	reportsGroup := v1Group.Group("report")
+	reportsGroup.Get("/monthly/:year/:month", h.GetMonthlyReport)
 }
