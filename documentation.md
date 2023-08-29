@@ -5,6 +5,7 @@
 * [Users](#v1users)
 * [Categories](#v1categories)
 * [Entries](#v1entries)
+* [Reports](#v1reports)
 * [Test Data for Manual Testing](#test-data)
 
 ## Introduction
@@ -418,6 +419,52 @@ Errors
 | Bad Request         | 400  | entry id is not valid 
 | Unauthorized      | 401  | token has expired or user not authorized
 | Not Found | 404 | entry not found
+
+## Reports 
+
+### GET v1/report/monthly/:year/:month
+
+🔑 Requires user to be logged in.
+
+Get user's monthly financial report 
+
+Input example
+```
+GET v1/report/monthly/2023/6
+```
+Success response 
+```
+{
+  "user": "testusername111",
+  "year": 2023,
+  "month": 6,
+  "incomes": [
+    {
+      "category_id": 1,
+      "category_name": "day job",
+      "amount": 125500
+    }
+  ],
+  "expenses": [
+    {
+      "category_id": 3,
+      "category_name": "groceries",
+      "amount": 1303.39
+    },
+    {
+      "category_id": 4,
+      "category_name": "fun",
+      "amount": 600
+    }
+  ]
+}
+```
+Errors
+| Error             | Code          | Description   |
+| -------------     | ------------- | -             |
+| Bad Request         | 400  | year or month is not valid 
+| Unauthorized      | 401  | token has expired or user not authorized
+
 
 ## Test Data
 

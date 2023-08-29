@@ -8,7 +8,7 @@ import (
 )
 
 type Service interface {
-	GetMonthlyReport(ctx context.Context, username string, year int, month int) ([]*model.MonthlyReportItem, error)
+	GetMonthlyReport(ctx context.Context, username string, year int, month int) (*model.MonthlyReport, error)
 }
 
 type service struct {

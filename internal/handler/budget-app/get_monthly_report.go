@@ -23,9 +23,9 @@ func (h handler) GetMonthlyReport(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("month is not valid")
 	}
 
-	report, err := h.reportsService.GetMonthlyReport(c.Context(), username, reportYearRow, reportMonthRow)
+	fullReport, err := h.reportsService.GetMonthlyReport(c.Context(), username, reportYearRow, reportMonthRow)
 	if err != nil {
 		return err
 	}
-	return c.JSON(report)
+	return c.JSON(fullReport)
 }
