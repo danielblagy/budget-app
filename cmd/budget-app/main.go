@@ -12,6 +12,7 @@ import (
 	"github.com/danielblagy/budget-app/internal/service/categories"
 	"github.com/danielblagy/budget-app/internal/service/entries"
 	persistent_store "github.com/danielblagy/budget-app/internal/service/persistent-store"
+	"github.com/danielblagy/budget-app/internal/service/reports"
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -88,6 +89,7 @@ func main() {
 
 	categoriesQuery := queryFactory.NewCategoriesQuery(conn)
 	entriesQuery := queryFactory.NewEntriesQuery(conn)
+	reportsQuery := queryFactory.NewReportsQuery(conn)
 
 	// services
 
@@ -97,6 +99,7 @@ func main() {
 	accessService := access.NewService(usersService, persistentStoreService)
 	categoriesService := categories.NewService(logger.New("service", "categories"), categoriesQuery, cacheService, queryFactory)
 	entriesService := entries.NewService(entriesQuery)
+	reportsService := reports.NewService(reportsQuery)
 
 	// fiber app
 
@@ -105,7 +108,7 @@ func main() {
 
 	// handlers
 
-	budgetAppHandler := budget_app.NewHandler(validate, app, usersService, accessService, categoriesService, entriesService)
+	budgetAppHandler := budget_app.NewHandler(validate, app, usersService, accessService, categoriesService, entriesService, reportsService)
 	budgetAppHandler.SetupRoutes()
 
 	// start the app

@@ -4,6 +4,7 @@ import (
 	"github.com/danielblagy/budget-app/internal/service/access"
 	"github.com/danielblagy/budget-app/internal/service/categories"
 	"github.com/danielblagy/budget-app/internal/service/entries"
+	"github.com/danielblagy/budget-app/internal/service/reports"
 	"github.com/danielblagy/budget-app/internal/service/users"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -31,6 +32,7 @@ type Handler interface {
 	LogIn(c *fiber.Ctx) error
 	LogOut(c *fiber.Ctx) error
 	Refresh(c *fiber.Ctx) error
+	GetMonthlyReport(c *fiber.Ctx) error
 }
 
 type handler struct {
@@ -41,9 +43,10 @@ type handler struct {
 	accessService     access.Service
 	categoriesService categories.Service
 	entriesService    entries.Service
+	reportsService    reports.Service
 }
 
-func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service, categoriesService categories.Service, entriesService entries.Service) Handler {
+func NewHandler(validate *validator.Validate, app *fiber.App, usersService users.Service, accessService access.Service, categoriesService categories.Service, entriesService entries.Service, reportsService reports.Service) Handler {
 	return &handler{
 		validate:          validate,
 		app:               app,
@@ -51,5 +54,6 @@ func NewHandler(validate *validator.Validate, app *fiber.App, usersService users
 		accessService:     accessService,
 		categoriesService: categoriesService,
 		entriesService:    entriesService,
+		reportsService:    reportsService,
 	}
 }

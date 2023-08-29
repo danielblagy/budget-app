@@ -62,6 +62,22 @@ func (_m *QueryFactory) NewEntriesQuery(_a0 pgxscan.Querier) db.EntriesQuery {
 	return r0
 }
 
+// NewReportsQuery provides a mock function with given fields: _a0
+func (_m *QueryFactory) NewReportsQuery(_a0 pgxscan.Querier) db.ReportsQuery {
+	ret := _m.Called(_a0)
+
+	var r0 db.ReportsQuery
+	if rf, ok := ret.Get(0).(func(pgxscan.Querier) db.ReportsQuery); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(db.ReportsQuery)
+		}
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewQueryFactory interface {
 	mock.TestingT
 	Cleanup(func())
